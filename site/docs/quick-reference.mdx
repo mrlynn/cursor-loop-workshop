@@ -1,0 +1,142 @@
+---
+title: Quick Reference
+description: Copy-paste harness for advanced Cursor users — rules, skills, commands, tasks
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Reference" subtitle="Everything you need in one page — skip the tour if you already live in Agent mode" />
+
+Advanced Cursor users do not need a 3-hour narrative. You need **copy-paste artifacts** that work Monday morning. This page is the harness index.
+
+<InstructorNote>
+Point skeptics here first. If they run one loop to green in 15 minutes, the curriculum is optional depth — not a prerequisite lecture.
+</InstructorNote>
+
+## Thesis (one line)
+
+**A loop = prompt + verifier the agent can iterate against.**
+
+## 15-minute path
+
+1. `./scripts/copy-harness.sh /path/to/lab-repo` — install rules, skills, commands
+2. `./scripts/task-prompt.sh oms-status-race-001 --copy` — prompt to clipboard
+3. Open lab repo in Agent mode → paste → let the verifier close the loop
+4. `./scripts/loop-harness.sh --task oms-status-race-001 --method B --log-only ...` — log evidence
+
+Full skip path: `ADVANCED.md` at the workshop repo root.
+
+## Rules — reference with `@`
+
+| Rule | When to `@` |
+|------|-------------|
+| `loop-discipline` | Every rung 2+ loop thread |
+| `loop-termination` | Any task with iteration budget |
+| `loop-safety` | Loops that run shell commands |
+
+```text
+@loop-discipline @loop-termination @loop-safety
+```
+
+Files live in `.cursor/rules/` — copy into your lab repo with `copy-harness.sh`.
+
+## Skills — invoke with `/`
+
+| Skill | Use when |
+|-------|----------|
+| `/loop-engineering` | Execute act → verify → correct on a task spec |
+| `/verifier-crafting` | Design pass/fail success criteria |
+| `/run-comparison` | A/B/C prompt vs loop measurement |
+
+## Commands — manual `/` shortcuts
+
+| Command | Use when |
+|---------|----------|
+| `/loop-task` | Run a corpus task by id |
+| `/loop-compare` | Facilitate prompt vs loop demo |
+| `/loop-verify` | Validate or design a verifier |
+| `/byo-loop-task` | Scaffold and run in your repo |
+
+Install via `make install-plugin` or `copy-harness.sh`.
+
+## Task corpus
+
+```bash
+./scripts/task-prompt.sh --list
+./scripts/task-prompt.sh oms-status-race-001
+./scripts/task-prompt.sh oms-status-race-001 --copy
+```
+
+| Task | Rung | Verifier |
+|------|------|----------|
+| `oms-status-race-001` | 2 | `pytest tests/order/test_status_transition.py` |
+| `lint-gate-stale-import-001` | 2 | `ruff check src/orders/` (BYO pattern) |
+| `type-narrowing-handler-001` | 1 | `mypy src/api/handlers/order.py` (BYO pattern) |
+
+Specs: `tasks/*.yaml` · Index: `tasks/README.md`
+
+## Copy-paste loop prompt
+
+<PromptBlock
+  title="oms-status-race-001 (generate fresh: ./scripts/task-prompt.sh oms-status-race-001)"
+  prompt={`@loop-discipline @loop-termination @loop-safety
+
+/loop-engineering
+
+Task: oms-status-race-001
+Rung: 2
+
+Seeded state: concurrent status updates leave orders inconsistent; integration test is red.
+
+Verifier (after EVERY edit):
+  pytest tests/order/test_status_transition.py -x
+
+Regression gates:
+  mypy src/orders/
+  pytest tests/order/ -q
+
+Budget: 8 iterations. Stop if blocked 3x on same error.`}
+/>
+
+## When to loop vs when to stop
+
+| Loop | Do not loop |
+|------|-------------|
+| Failing test, lint, or build you can run | Tab-sized single-line edit |
+| Fix needs 3+ iterations with regression risk | Pure exploration — use Plan |
+| You want A/B evidence vs prompt | No machine-checkable done |
+
+## Honest trade-offs (advanced users expect this)
+
+Loops often **cost more tokens** and sometimes **more wall-clock**. They win on **human interventions** and **pass rate** when the verifier encodes real pain. Do not advocate loops without reporting cost.
+
+## Scripts
+
+| Script | Purpose |
+|--------|---------|
+| `setup-workshop.sh` | Clone workshop + atlas-oms side by side |
+| `copy-harness.sh` | Install `.cursor/` into lab repo |
+| `task-prompt.sh` | YAML → Agent prompt |
+| `scaffold-byo-task.sh` | Create BYO task YAML |
+| `build-plugin.sh` | Sync `.cursor/` → `plugin/` |
+| `loop-harness.sh` | Log FR-4 metrics (`--log-only` for V0) |
+
+Or use **Makefile**: `make help`
+
+## Plugin (team install)
+
+```bash
+make build-plugin && make install-plugin   # ~/.cursor/plugins/local/loop-engineering
+```
+
+Restart Cursor → **Settings → Plugins** → **Loop Engineering**. See `plugin/README.md`.
+
+## Bring your own repo
+
+[BYO guide →](./bring-your-own-repo) · `BYO.md` in repo root · `make scaffold`
+
+## Next Steps
+
+- First loop: [Hands-on Lab →](./hands-on-labs/first-loop-lab)
+- Continuum diagrams: [Developer Journey →](./getting-started/developer-journey)
+- Deep dive: [Loop Fundamentals →](./loop-fundamentals/overview)

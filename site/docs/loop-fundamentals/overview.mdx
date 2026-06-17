@@ -1,0 +1,139 @@
+---
+title: Loop Fundamentals
+description: Engineer task, verifier, rules, and termination — the four surfaces that determine loop success
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Loop Fundamentals"
+  title="The Four Engineering Surfaces"
+  subtitle="Task, verifier, rules, termination — in that leverage order"
+  variant="image"
+  agendaItems={[
+    { label: 'Craft tasks and verifiers' },
+    { label: 'Set termination and budgets' },
+  ]}
+/>
+
+Loop Engineering formalizes four surfaces. Most developers over-invest in the prompt and under-invest in the verifier. This section reverses that.
+
+## Why this matters
+
+A loop without a verifier is repeated guessing. A verifier without a well-scoped task produces false greens. Rules without termination run up token bills. Getting the four surfaces right is the difference between a demo that converts skeptics and one that reinforces prompt mode.
+
+## What you'll learn
+
+- You can write an unambiguous task spec with definition of done
+- You can attach a machine-checkable verifier to a seeded pain point
+- You can explain why rules encode discipline, not replace the verifier
+- You can set termination conditions before the first agent edit
+
+## How it works
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│    TASK     │────▶│  VERIFIER   │────▶│    RULES    │────▶│ TERMINATION │
+│ scoped goal │     │ pass/fail   │     │ act→verify  │     │ green/block │
+│ + seeded    │     │ signal      │     │ discipline  │     │ + budget    │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+```
+
+1. **Task** — well-scoped goal with unambiguous definition of done and a seeded failing state
+2. **Verifier** — objective signal: failing test, type error, lint gate, build, perf assertion
+3. **Rules** — loop discipline encoded (`after every edit, run verifier; do not stop until green`)
+4. **Termination & budget** — green, blocked, max iterations, token/time ceiling
+
+The agent loop is: **goal → act → observe verifier → correct → repeat** until termination.
+
+<SdlcAutonomyMap />
+
+Loop Engineering attaches primarily in the **Loop Eng.** and **Cloud** columns — wherever a verifier can close the Build and Debug loops. Plan and Review still matter at every stage.
+
+## When to use this
+
+| Surface | Highest leverage when | Weak signal |
+|---------|----------------------|-------------|
+| Task | Starting any new loop task | Vague "improve performance" |
+| Verifier | Always — non-negotiable | "I'll know it when I see it" |
+| Rules | Rung 2+ unattended loops | One-off supervised demo |
+| Termination | Every loop without exception | "Run until done" with no ceiling |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Pick a pain point',
+      body: 'From atlas-oms: one seeded bug with a story (e.g., race in order status).',
+    },
+    {
+      title: 'Write task spec',
+      body: 'One paragraph goal + seeded state + files likely involved.',
+    },
+    {
+      title: 'Draft verifier',
+      body: 'Use `/verifier-crafting` skill. Confirm red on seed, green on reference.',
+    },
+    {
+      title: 'Choose rules',
+      body: 'Select `@loop-discipline` + `@loop-termination` for rung 2.',
+    },
+    {
+      title: 'Set budget',
+      body: 'e.g., 8 iterations, stop if same error 3x.',
+    },
+  ]}
+/>
+
+## Example
+
+Full task spec (Appendix A from PRD):
+
+```yaml
+task_id: oms-status-race-001
+rung: 2
+area: order lifecycle
+seeded_state: concurrent status updates leave orders inconsistent; one test red
+verifier: pytest tests/order/test_status_transition.py
+regression_gates: mypy src/orders/ && ruff check src/orders/
+expected_iters: 3-5
+common_fails: agent fixes assertion without fixing race
+termination: green AND no regressions; budget 8 iterations
+```
+
+## Common mistakes
+
+### Beautiful prompt, no verifier
+**Symptom:** Agent produces plausible code; human still runs tests manually.  
+**Fix:** Put the verifier command in the task spec and rules, not just the prompt.
+
+### Verifier tests the wrong thing
+**Symptom:** Green while production bug remains.  
+**Fix:** Re-run `@verifier-crafting` — confirm failure mode matches seeded pain.
+
+### No termination budget
+**Symptom:** 15 iterations, spiraling cost, learner disengages.  
+**Fix:** Set max iterations in task spec and `@loop-termination` rule.
+
+:::tip Official Docs
+Agent workflows: [cursor.com/docs/agent/planning](https://cursor.com/docs/agent/planning)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="lf-overview"
+  items={[
+    {id: 'four', label: 'I can name all four surfaces in order'},
+    {id: 'spec', label: 'I have read a complete task spec example'},
+    {id: 'leverage', label: 'I understand verifier-crafting as highest leverage'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+## Next Steps
+
+Continue to [Tasks and Verifiers →](./tasks-and-verifiers)

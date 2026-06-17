@@ -1,0 +1,137 @@
+---
+title: Comparison Arm
+description: Run prompt-only vs agent loop vs background on identical tasks
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Measurement" subtitle="Facilitate the A/B/C demo that converts skeptics" />
+
+The comparison arm is the workshop's proof moment. Run it live with `/run-comparison` and narrate human interventions, not just pass rate.
+
+## Why this matters
+
+User story from PRD §10: "As a developer new to agents, I want to see the same task done prompt-only and as a loop so I can judge whether the loop is worth it for my work." This page is that story's script.
+
+## What you'll learn
+
+- You can facilitate arm A without leaking verifier into the prompt
+- You can facilitate arm B with rules + skill + full task spec
+- You can optionally demo arm C with background agent + PR review
+- You can log comparable JSON for each arm
+
+## How it works
+
+**Arm A — Prompt-only**
+
+1. Fresh Chat thread (not Agent).
+2. Goal only: "Fix the order status race so concurrent updates stay consistent."
+3. No test command in prompt.
+4. Human applies suggested patch.
+5. Human runs `pytest tests/order/test_status_transition.py`.
+6. Log pass/fail and intervention count.
+
+**Arm B — Agent loop**
+
+1. Fresh Agent thread.
+2. `@loop-discipline @loop-termination @loop-safety`
+3. `/loop-engineering` + full spec with verifier.
+4. Agent iterates until green or blocked.
+5. Log iterations, regressions, interventions.
+
+**Arm C — Background** (optional)
+
+:::caution VERIFY
+Confirm Background Agent launch UX before live demo.
+:::
+
+1. Same prompt as B via Cloud/Background.
+2. Human reviews PR.
+3. Run verifier on branch.
+
+## When to use this
+
+| Cohort profile | Arms to run | Time |
+|----------------|-------------|------|
+| Skeptical, first hour | A + B | 25 min |
+| Experienced with Agent | B + C | 30 min |
+| Full workshop | A + B + C | 45 min |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Reset repo',
+      body: '`git checkout workshop/oms-status-race-001` — verifier red.',
+    },
+    {
+      title: 'Arm A live',
+      body: 'Narrate: "I am the feedback loop." Count manual steps.',
+    },
+    {
+      title: 'Reset again',
+      body: 'Same commit hash for arm B.',
+    },
+    {
+      title: 'Arm B live',
+      body: 'Narrate: "Verifier is the feedback loop." Project terminal.',
+    },
+    {
+      title: 'Side-by-side',
+      body: 'Show JSON logs — interventions and iterations first, then cost.',
+    },
+    {
+      title: 'Discussion',
+      body: 'Ask: "Which tasks in your sprint have a verifier?"',
+    },
+  ]}
+/>
+
+## Example
+
+<InstructorNote>
+Allow 8–10 minutes for arm A (learners underestimate manual verify steps). Arm B typically 4–6 iterations × ~90s — budget 15 minutes. Keep model selection identical across arms.
+</InstructorNote>
+
+Arm A log:
+
+```json
+{
+  "method": "A",
+  "pass": false,
+  "pass_at_1": false,
+  "human_interventions": 5,
+  "wall_clock_seconds": 420,
+  "notes": "Human ran verifier twice; first patch was symptom-only"
+}
+```
+
+## Common mistakes
+
+### Verifier hint in arm A
+**Symptom:** A and B look the same.  
+**Fix:** Arm A prompt has no test command.
+
+### No git reset between arms
+**Symptom:** B starts from A's partial fix.  
+**Fix:** Hard reset to task seed commit.
+
+### Victory lap on tokens
+**Symptom:** "Loops are always faster/cheaper."  
+**Fix:** Show cases where B costs more but wins on pass rate.
+
+:::tip Official Docs
+[Background Agent](https://cursor.com/docs/background-agent)
+:::
+
+## Checklist
+
+- [ ] Task branch pinned and documented
+- [ ] Arm A and B use identical seed commit
+- [ ] JSON logs written for each arm
+- [ ] Debrief covers cost honestly
+
+## Next Steps
+
+Continue to [Metrics and Evidence →](./metrics-and-evidence)

@@ -1,0 +1,131 @@
+---
+id: intro
+slug: /
+title: Loop Engineering Workshop
+sidebar_label: Introduction
+description: Move from prompt mode to agentic loops with machine-checkable verifiers
+hide_title: true
+presentation_layout: true
+hide_table_of_contents: true
+---
+
+<PresentationHero
+  title="Loop Engineering"
+  subtitle="From prompts to agentic loops — teach it, run it, measure it"
+  background="bg_1"
+  footerLabel="Loop Engineering × Cursor"
+/>
+
+Most developers adopting Cursor plateau at **prompt mode**: they ask, read the output, judge it themselves, and ask again. They are the feedback loop. The step-change in value comes when you hand that loop to the agent — goal in, agent acts, agent reads a machine-checkable signal, corrects, and repeats until done.
+
+This workshop teaches the **Loop Engineering Framework**: a reusable substrate, harness, and measurement layer for agentic loops. You will implement a loop, attach a verifier, encode discipline in rules and skills, and compare loop vs. prompt on the same task.
+
+<AutonomyJourneyDiagram defaultStage="loop-engineering" />
+
+See the full journey — including SDLC overlay and loop anatomy — on [Developer Journey →](./getting-started/developer-journey).
+
+:::tip Official Docs
+For the latest Agent mode and customization reference, visit [cursor.com/docs](https://cursor.com/docs).
+:::
+
+:::tip Already advanced?
+**BYO:** [Bring your own repo →](./bring-your-own-repo) · `BYO.md` · `make install-plugin` · `/byo-loop-task`
+
+**Skip path:** [Quick Reference →](./quick-reference) · `ADVANCED.md` · `make prompt-copy TASK=oms-status-race-001`
+:::
+
+## Who this is for
+
+- Experienced software developers (3+ years) who use Cursor but still default to one-shot prompting
+- Workshop facilitators and SEs delivering Cursor 101, hackathons, or Customer Developer Days
+- **Prerequisites:** Cursor installed, Agent mode available, a sample repo cloned (`atlas-oms` or equivalent)
+
+## How to use this guide
+
+This is an **instructor-led, hands-on** workshop (~3–4 hours). Follow the sidebar in order. Each section ends with a checklist and optional knowledge check. Facilitators: use presenter mode (`presentation_layout` pages) for projection.
+
+| Section | Time | Outcome |
+|---------|------|---------|
+| Getting Started | 30 min | Name the autonomy ladder rung you're on |
+| Loop Fundamentals | 45 min | Write a task spec with a verifier |
+| Rules & Skills | 45 min | Deploy portable loop discipline |
+| The Harness | 30 min | Script a reproducible loop run |
+| Measurement | 30 min | Log prompt vs. loop metrics |
+| Hands-on Labs | 60 min | Close one loop to green on a seeded task |
+
+## Before you start
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="intro-prework"
+  items={[
+    {id: 'install', label: 'Cursor installed and signed in'},
+    {id: 'agent', label: 'Agent mode enabled for your account'},
+    {id: 'repo', label: 'Sample repo cloned (atlas-oms or workshop fork)'},
+    {id: 'index', label: 'Codebase indexing complete (status bar indicator)'},
+    {id: 'privacy', label: 'Privacy Mode configured per org policy'},
+  ]}
+/>
+
+## What's in this guide
+
+- **Getting Started** — Walk the autonomy continuum (Tab → Cloud → AI SDLC) and map yourself on the ladder
+- **Loop Fundamentals** — Engineer the four surfaces: task, verifier, rules, termination
+- **Rules & Skills** — Encode loop discipline so it survives context pressure
+- **The Harness** — Compose Agent mode, CLI, and Hooks into a reproducible loop
+- **Measurement** — Run A/B/C comparison and log honest metrics
+- **Hands-on Labs** — Attach a verifier and close a seeded `atlas-oms` task to green
+
+## Learning path
+
+<CoursePath
+  courseId="loop-engineering"
+  modules={[
+    {
+      id: 'getting-started/overview',
+      title: 'Getting Started',
+      duration: '30 min',
+      description: 'Continuum, autonomy ladder, workshop setup',
+    },
+    {
+      id: 'loop-fundamentals/overview',
+      title: 'Loop Fundamentals',
+      duration: '45 min',
+      description: 'Task, verifier, rules, termination',
+    },
+    {
+      id: 'rules-and-skills/overview',
+      title: 'Rules & Skills',
+      duration: '45 min',
+      description: 'Portable loop discipline',
+    },
+    {
+      id: 'the-harness/overview',
+      title: 'The Harness',
+      duration: '30 min',
+      description: 'CLI, Hooks, guardrails',
+    },
+    {
+      id: 'measurement/overview',
+      title: 'Measurement',
+      duration: '30 min',
+      description: 'Comparison arm and metrics',
+    },
+    {
+      id: 'hands-on-labs/first-loop-lab',
+      title: 'Hands-on Lab',
+      duration: '60 min',
+      description: 'Close a loop to green',
+    },
+  ]}
+/>
+
+## Operating modes at a glance
+
+<OperatingModeCards />
+
+For loop work specifically: start in **Plan** to read the seeded state and verifier, switch to **Build** (Agent mode) for the act→verify cycle, use **Debug** when the verifier output is ambiguous, and **Review** before declaring green.
+
+## Next Steps
+
+Head to [Developer Journey →](./getting-started/developer-journey) for the full continuum diagrams, then [Getting Started →](./getting-started/overview)

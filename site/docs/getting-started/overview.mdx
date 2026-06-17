@@ -1,0 +1,131 @@
+---
+title: Why Loop Engineering
+description: Understand the prompt-mode plateau and what changes with agentic loops
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Getting Started"
+  title="Why Loop Engineering"
+  subtitle="A loop is a prompt plus a verifier the agent can iterate against"
+  variant="image"
+  agendaItems={[
+    { label: 'Map yourself on the autonomy ladder' },
+    { label: 'Set up your workshop environment' },
+  ]}
+/>
+
+Cursor's product center of gravity has moved from completion to agents — most usage now runs through Agent mode. But adoption in the field lags: developers reach for one-shot prompting because it is familiar and because agentic loops feel risky and unmeasurable. Loop Engineering closes both gaps with a teachable substrate and an evidence layer.
+
+<AutonomyJourneyDiagram defaultStage="chat-composer" />
+
+The continuum above shows where most teams plateau (**prompt mode**) and where this workshop moves you (**Loop Engineering**, Rung 2). [Full journey diagrams →](./developer-journey)
+
+## Why this matters
+
+When you are the feedback loop, every iteration costs your attention. Agent mode can run commands, read test output, and correct — but only if you give it an **objective signal** to iterate against. Without a verifier, a "loop" is repeated guessing. Agents over-build poorly specified tasks, which burns trust on first contact. Loop Engineering shifts leverage from prompt-crafting to **verifier-crafting**.
+
+## What you'll learn
+
+- You can explain the difference between prompt mode and an agentic loop in one sentence
+- You can name the four engineering surfaces: task, verifier, rules, termination
+- You can identify which adoption gap (substrate vs. evidence) blocks your team today
+- You can articulate the honest trade-off: loops often cost more tokens but win on pass rate and human interventions
+
+## How it works
+
+A traditional prompt is one-shot; the human closes the loop. An agentic loop is:
+
+**goal → act → observe a machine-checkable signal → correct → repeat until a termination condition**
+
+Agent mode already executes this when it runs tests and iterates on failures. The framework formalizes what makes that loop reliable: a well-scoped task, a verifier that returns pass/fail, rules that encode act→verify discipline, and termination conditions so the loop does not run forever.
+
+The teaching payload ships on `atlas-oms` — a deliberately aged B2B Order Management System with seeded pain points. Each pain point becomes a loop task once you attach a verifier and reference solution.
+
+## When to use this
+
+| Situation | Prompt / Tab / Inline | Agent loop |
+|-----------|----------------------|------------|
+| Single-line completion | ✓ Tab | Overkill |
+| Exploratory read of unfamiliar code | ✓ Chat / Plan | Optional |
+| Fix with a failing test you can run | Escalate | ✓ Agent loop |
+| Multi-step refactor with regression risk | Risky one-shot | ✓ Loop + full suite gate |
+| Task with no machine-checkable done | ✓ Human judges | Loop will guess — craft a verifier first |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Read the thesis',
+      body: 'Skim PRD §1 and §5 in the workshop repo. Note: "a loop is a prompt plus a verifier."',
+    },
+    {
+      title: 'Open Agent mode',
+      body: 'Confirm you can run terminal commands from Agent mode in your sample repo.',
+    },
+    {
+      title: 'Run a failing test',
+      body: 'Pick any red test in atlas-oms (or your fork). This is your first verifier signal.',
+    },
+    {
+      title: 'Try prompt-only fix',
+      body: 'In Chat, ask for a fix without giving the test command. Apply manually. Did you close the loop yourself?',
+    },
+    {
+      title: 'Contrast with loop framing',
+      body: 'In a fresh Agent thread, include the verifier command in the prompt. Observe the agent re-run tests.',
+    },
+    {
+      title: 'Name your gap',
+      body: 'Which blocks you more today — no verifiable tasks (substrate) or no comparison data (evidence)?',
+    },
+  ]}
+/>
+
+## Example
+
+Core thesis from the framework:
+
+```text
+A loop = prompt + verifier the agent can iterate against.
+Engineering effort moves from crafting the prompt to crafting the verifier and the spec.
+```
+
+## Common mistakes
+
+### Treating Agent mode as "Chat with terminal"
+**Symptom:** Long threads, no test runs, human still judges every diff.  
+**Fix:** Attach a verifier command and a termination rule before the first edit.
+
+### Skipping the seeded failing state
+**Symptom:** Agent "fixes" code that was never broken; demo falls flat.  
+**Fix:** Baseline the verifier on unmodified code — it must fail first.
+
+### Hiding loop cost
+**Symptom:** Learners distrust the framework when tokens and wall-clock spike.  
+**Fix:** Log cost alongside pass rate and human interventions — see Measurement section.
+
+:::tip Official Docs
+Agent mode overview: [cursor.com/docs/agent](https://cursor.com/docs/agent)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="gs-overview"
+  items={[
+    {id: 'thesis', label: 'I can state the loop thesis in one sentence'},
+    {id: 'four-surfaces', label: 'I can name task, verifier, rules, termination'},
+    {id: 'agent-terminal', label: 'Agent mode runs terminal commands in my repo'},
+    {id: 'failing-test', label: 'I have seen a verifier fail on seeded state'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+## Next Steps
+
+Continue to [Developer Journey →](./developer-journey) for loop anatomy and SDLC overlay, then [Autonomy Ladder →](./autonomy-ladder)

@@ -1,0 +1,105 @@
+---
+title: Hands-on Labs
+description: Close a seeded atlas-oms loop to green using rules, skills, and verifiers
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Hands-on Labs"
+  title="Hands-on Labs"
+  subtitle="Attach a verifier, run the loop, log the result — done when green"
+  variant="image"
+  agendaItems={[
+    { label: 'First loop lab (rung 2)' },
+    { label: 'Prompt vs loop demo' },
+  ]}
+/>
+
+Reading about loops is not closing one. These labs use `atlas-oms` seeded tasks from the corpus (V0: `oms-status-race-001`).
+
+## Why this matters
+
+PRD §6.4 curriculum layer: hands-on lab where the learner attaches a verifier and runs the loop. This is where rung 0–1 learners become rung 2–3 practitioners.
+
+## What you'll learn
+
+- You can baseline a red verifier on a seeded branch
+- You can run a rung-2 loop with rules + `/loop-engineering`
+- You can log your run to `loop-runs/` JSON
+- You can facilitate or complete a prompt-vs-loop comparison
+
+## How it works
+
+**Lab environment:**
+
+- Repo: `atlas-oms` (or workshop fork)
+- Branch: `workshop/oms-status-race-001`
+- Rules: `@loop-discipline @loop-termination @loop-safety`
+- Skill: `/loop-engineering`
+- Done when: verifier + regression gates green
+
+**Success criteria:**
+
+1. Verifier was red before first edit
+2. Loop stopped with `stop_reason: green` (not budget exhaustion)
+3. `regression_count` is 0 or fixed before finish
+4. JSON log committed to personal `loop-runs/` (not necessarily pushed)
+
+## When to use this
+
+| Lab | Audience | Duration |
+|-----|----------|----------|
+| First loop lab | All learners | 45–60 min |
+| Prompt vs loop demo | Facilitators + skeptics | 25 min |
+
+## Step-by-step
+
+See detailed procedures in child pages. High-level:
+
+1. Environment setup (Getting Started)
+2. First loop lab — solo rung-2 closure
+3. Prompt vs loop — paired A/B observation
+
+## Example
+
+Task card for lab desk:
+
+```yaml
+task_id: oms-status-race-001
+rung: 2
+verifier: pytest tests/order/test_status_transition.py -x
+regression: mypy src/orders/ && pytest tests/order/ -q
+budget: 8
+reference: patches/oms-status-race-001.patch  # facilitator only
+```
+
+## Common mistakes
+
+### Peeking at reference patch
+**Symptom:** Lab becomes copy-paste.  
+**Fix:** Facilitators hold patches; learners use verifier signal only.
+
+### Skipping JSON log
+**Symptom:** No evidence for debrief.  
+**Fix:** Last step of every lab is write `loop-runs/*.json`.
+
+:::tip Official Docs
+[Agent terminal](https://cursor.com/docs/agent/terminal)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="labs-overview"
+  items={[
+    {id: 'branch', label: 'On correct workshop task branch'},
+    {id: 'red', label: 'Verifier red before lab start'},
+    {id: 'rules-skills', label: 'Rules and skills ready in .cursor/'},
+  ]}
+/>
+
+## Next Steps
+
+Continue to [First Loop Lab →](./first-loop-lab)

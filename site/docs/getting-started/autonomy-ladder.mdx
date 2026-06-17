@@ -1,0 +1,157 @@
+---
+title: The Autonomy Ladder
+description: Progress deliberately from prompt-only to background loops without getting burned
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Getting Started" subtitle="Climb rungs 0–3 with explicit verifier and human roles" />
+
+Jumping straight to full autonomy burns trust: agents over-build, humans lose visibility, and one bad demo reinforces prompt mode. The autonomy ladder maps tasks to Cursor surfaces so you progress deliberately.
+
+## Why this matters
+
+The framework tags every corpus task with the rung it teaches. Curriculum walks learners up the ladder; facilitators match demos to the room's comfort level. Knowing your rung tells you which rules, verifiers, and human checkpoints to apply.
+
+## What you'll learn
+
+- You can place each Cursor surface on rungs 0–3
+- You can choose the right rung for a given task and audience
+- You can describe the human's role at each rung
+- You can plan a pre/post workshop rung movement goal
+
+## How it works
+
+| Rung | Mode | Verifier | Human role |
+|------|------|----------|------------|
+| **0** | Prompt-only (Chat / Cmd+K) | None — human eyeballs | Closes the loop |
+| **1** | Agent mode, supervised | Single test file | Approves each iteration |
+| **2** | Agent mode + loop rules | Test suite + lint | Reviews at green |
+| **3** | Background / Cloud agent | Full verifier + budget | Reviews the PR |
+
+Rung 0 is not wrong — Tab and Inline Edit remain the right tools for many edits. The ladder teaches **when to escalate** to a loop, not to replace all prompting.
+
+At rung 1, the human still approves terminal commands and each iteration. At rung 2, `.cursor/rules` encode act→verify→correct→repeat; the human steps in at green or when blocked. At rung 3, the loop runs asynchronously in a worktree; the human reviews the resulting PR.
+
+<LoopFeedbackDiagram />
+
+The rungs below map to stages on the [Developer Journey](./developer-journey) continuum — from Chat/Composer (Rung 0) through Cloud agents (Rung 3).
+
+## When to use this
+
+| Your situation | Start at | Escalate when |
+|----------------|----------|---------------|
+| Skeptical audience, first demo | Rung 0 vs 1 side-by-side | They ask "can it run the tests itself?" |
+| Hands-on lab with facilitators | Rung 1–2 | Learner has run one supervised loop |
+| Internal dogfood on known tasks | Rung 2 | Verifier stable, rules committed |
+| Long-running fix, low urgency | Rung 3 | Budget and Hooks configured |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Self-assess',
+      body: 'Honestly: which rung describes your default Cursor workflow today?',
+    },
+    {
+      title: 'Map last week',
+      body: 'List three tasks you did in Cursor. Tag each with rung 0–3.',
+    },
+    {
+      title: 'Identify escalation triggers',
+      body: 'For each task, note what signal would have justified a loop (failing test, lint gate, etc.).',
+    },
+    {
+      title: 'Pick lab rung',
+      body: 'For the hands-on lab, target rung 2 unless your cohort is brand new to Agent mode.',
+    },
+    {
+      title: 'Set pre/post goal',
+      body: 'Workshop goal: move from rung 0–1 to rung 2–3 on at least one verifiable task.',
+    },
+  ]}
+/>
+
+## Example
+
+Task metadata from the corpus:
+
+```yaml
+task_id: oms-status-race-001
+rung: 2
+verifier: pytest tests/order/test_status_transition.py
+expected_iters: 3-5
+human_role: reviews at green; intervenes if blocked 3x on same error
+```
+
+## Common mistakes
+
+### Skipping rung 1 in live demos
+**Symptom:** Audience never sees the cognitive load difference between prompt and loop.  
+**Fix:** Always run arm A (prompt-only) before arm B in comparison demos.
+
+### Rung 3 without budget
+**Symptom:** Background agent runs overnight, surprise diffs, trust collapse.  
+**Fix:** Set max iterations and termination rules before launching background runs.
+
+### Wrong rung for task difficulty
+**Symptom:** Rung 2 rules on a task that needs human judgment every step.  
+**Fix:** Lower the rung or improve the verifier with `@verifier-crafting`.
+
+:::tip Official Docs
+Background agents: [cursor.com/docs/background-agent](https://cursor.com/docs/background-agent)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="gs-ladder"
+  items={[
+    {id: 'self-rung', label: 'I know my default rung today'},
+    {id: 'table', label: 'I can explain human role at rungs 1–3'},
+    {id: 'lab-rung', label: 'I know which rung the hands-on lab targets'},
+  ]}
+/>
+
+<KnowledgeCheck
+  courseId="loop-engineering"
+  quizId="gs-ladder-quiz"
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'At rung 2, when does the human typically intervene?',
+      options: [
+        { id: 'a', label: 'After every agent edit' },
+        { id: 'b', label: 'Only at green or when blocked' },
+        { id: 'c', label: 'Never — fully unattended' },
+        { id: 'd', label: 'Only during code review weeks later' },
+      ],
+      correctId: 'b',
+      explanation:
+        'Rung 2 encodes loop discipline in rules; human reviews at green or when termination triggers blocked.',
+    },
+    {
+      id: 'q2',
+      prompt: 'What verifier scope fits rung 1 best?',
+      options: [
+        { id: 'a', label: 'Full CI pipeline' },
+        { id: 'b', label: 'Single focused test file' },
+        { id: 'c', label: 'Human eyeballs only' },
+        { id: 'd', label: 'Production deploy smoke test' },
+      ],
+      correctId: 'b',
+      explanation:
+        'Rung 1 is supervised Agent mode — a single test file keeps iterations legible while the human approves each step.',
+    },
+  ]}
+/>
+
+<StatementBlock background="bg_5">
+  You know your rung and when to escalate. Next: engineer the four surfaces that make loops succeed.
+</StatementBlock>
+
+## Next Steps
+
+Continue to [Environment Setup →](./environment-setup)

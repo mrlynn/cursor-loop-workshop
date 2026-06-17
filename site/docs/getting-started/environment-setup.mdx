@@ -1,0 +1,178 @@
+---
+title: Environment Setup
+description: Clone the substrate, install loop rules and skills, confirm verifiers run
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Getting Started" subtitle="Clone atlas-oms, deploy loop rules/skills, baseline a verifier" />
+
+The workshop ships a portable `.cursor/` directory: three loop rules and three skills. Your sample repo needs a runnable verifier before the first lab.
+
+## Why this matters
+
+Loop runs must be reproducible across a cohort. Same rules, same skills, same task version — otherwise comparison metrics are meaningless. Environment setup is not overhead; it is FR-6 (portable harness) in practice.
+
+## What you'll learn
+
+- You can run `./scripts/setup-workshop.sh` and `./scripts/copy-harness.sh` for the two-repo layout
+- You can invoke skills with `/loop-engineering` and rules with `@loop-discipline`
+- You can run the atlas-oms verifier locally and see a red baseline
+- You can configure `.cursorignore` for secret hygiene
+
+The workshop uses **two repositories**. This repo (`loop-engineering`) holds the curriculum site, harness, and task specs. The **atlas-oms** lab repo holds the seeded codebase where verifiers run.
+
+## How it works
+
+**This repo (workshop):**
+
+```
+loop-engineering/
+├── .cursor/          # harness — copy into atlas-oms, do not run labs here
+├── tasks/            # versioned task YAML
+├── scripts/          # setup-workshop.sh, copy-harness.sh, loop-harness.sh
+└── site/             # Docusaurus workshop (npm start)
+```
+
+**Lab repo (atlas-oms):** opened as the Cursor workspace for all hands-on work.
+
+Harness contents copied into the lab:
+
+```
+.cursor/
+  rules/    loop-discipline, loop-termination, loop-safety
+  skills/   loop-engineering, verifier-crafting, run-comparison
+```
+
+Rules load when referenced (`@loop-discipline`). Skills load via `/skill-name`.
+
+### One-command setup (recommended)
+
+From the workshop repo root:
+
+```bash
+chmod +x scripts/*.sh
+./scripts/setup-workshop.sh ~/code/loop-workshop
+./scripts/copy-harness.sh ~/code/loop-workshop/atlas-oms
+```
+
+Then open `~/code/loop-workshop/atlas-oms` in Cursor — not the workshop repo root.
+
+## When to use this
+
+| Setup task | Tool | Notes |
+|------------|------|-------|
+| Team-wide loop discipline | Commit rules to repo | Keep always-apply lean |
+| Facilitator-only comparison procedure | `run-comparison` skill | On-demand, not always-apply |
+| Learner-owned repo | Copy `.cursor/` subset | Edit verifier paths per project |
+| Secrets in repo | `.cursorignore` | Never index `.env` |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Run setup script',
+      body: 'From workshop root: `./scripts/setup-workshop.sh ~/code/loop-workshop` — clones/copies both repos side by side.',
+    },
+    {
+      title: 'Install harness',
+      body: '`./scripts/copy-harness.sh ~/code/loop-workshop/atlas-oms` — copies rules and skills into the lab.',
+    },
+    {
+      title: 'Checkout task branch',
+      body: 'In atlas-oms: `git checkout workshop/oms-status-race-001` (facilitator confirms tag/branch).',
+    },
+    {
+      title: 'Install lab dependencies',
+      body: 'Follow atlas-oms README — typically `pip install -e ".[dev]"` or project equivalent.',
+    },
+    {
+      title: 'Baseline verifier',
+      body: 'Run `pytest tests/order/test_status_transition.py -x`. Confirm RED on seeded state.',
+    },
+    {
+      title: 'Open lab in Cursor',
+      body: 'Open atlas-oms as workspace (not the workshop site folder). Wait for indexing.',
+    },
+    {
+      title: 'Start workshop site',
+      body: 'Separate terminal: `cd loop-engineering/site && npm install && npm run start` for curriculum.',
+    },
+    {
+      title: 'Smoke-test harness',
+      body: 'In Agent mode on atlas-oms: `/loop-engineering` and `@loop-discipline` — confirm both load.',
+    },
+  ]}
+/>
+
+## Example
+
+Sample `.cursorignore` entries for the OMS repo:
+
+```text
+.env
+.env.*
+!.env.example
+**/secrets/
+loop-runs/*.json
+```
+
+## Common mistakes
+
+### Rules in personal settings only
+**Symptom:** Cohort gets different agent behavior.  
+**Fix:** Commit `.cursor/rules` to the repo; team syncs on pull.
+
+### Verifier passes on seeded state
+**Symptom:** Lab has no tension; loop demo fails.  
+**Fix:** Wrong branch or verifier path — ask facilitator for task version pin.
+
+### Skipping indexing
+**Symptom:** Agent edits wrong files, wastes iterations.  
+**Fix:** Wait for codebase indexed indicator before first loop.
+
+:::tip Official Docs
+Rules: [cursor.com/docs/context/rules](https://cursor.com/docs/context/rules) · Skills: [cursor.com/docs/context/skills](https://cursor.com/docs/context/skills)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="gs-env"
+  items={[
+    {id: 'cloned', label: 'atlas-oms cloned and dependencies installed'},
+    {id: 'red', label: 'Task verifier fails on seeded state'},
+    {id: 'rules', label: 'Loop rules visible in .cursor/rules'},
+    {id: 'skills', label: '/loop-engineering skill loads in Agent mode'},
+    {id: 'ignore', label: '.cursorignore excludes secrets'},
+  ]}
+/>
+
+<ModuleRecap
+  courseId="loop-engineering"
+  module="Getting Started"
+  objectives={[
+    'Explain loop = prompt + verifier; leverage is verifier-crafting',
+    'Map yourself on autonomy ladder rungs 0–3',
+    'Deploy portable .cursor/ rules and skills to lab repo',
+  ]}
+  checklistId="gs-env"
+  checklistItems={[
+    {id: 'cloned', label: 'atlas-oms cloned and dependencies installed'},
+    {id: 'red', label: 'Task verifier fails on seeded state'},
+    {id: 'rules', label: 'Loop rules visible in .cursor/rules'},
+    {id: 'skills', label: '/loop-engineering skill loads in Agent mode'},
+    {id: 'ignore', label: '.cursorignore excludes secrets'},
+  ]}
+  nextModule={{
+    title: 'Loop Fundamentals',
+    href: '/loop-fundamentals/overview',
+    duration: '45 min',
+  }}
+/>
+
+## Next Steps
+
+Continue to [Loop Fundamentals →](../loop-fundamentals/overview)

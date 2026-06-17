@@ -1,0 +1,161 @@
+---
+title: First Loop Lab
+description: Close oms-status-race-001 to green using loop rules and loop-engineering skill
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Hands-on Labs" subtitle="Rung 2 — you review at green, not every iteration" />
+
+This lab is the workshop's core exercise. You will run an agentic loop on a real seeded bug and log the result.
+
+## Why this matters
+
+First contact with loops must succeed often enough to build trust. This task is tuned for 3–5 iterations with a clear verifier — not a toy kata, not a production fire drill.
+
+## What you'll learn
+
+- You can baseline iteration 0 (verifier red)
+- You can run the act→verify cycle without becoming the feedback loop
+- You can recognize blocked vs green termination
+- You can write a complete FR-4 metric log
+
+## How it works
+
+<LabPanel
+  title="oms-status-race-001"
+  module="Hands-on Labs"
+  duration="45 min"
+  prerequisites={[
+    'atlas-oms on workshop/oms-status-race-001 branch',
+    'Loop rules and skills in .cursor/',
+    'Verifier red on seeded state (iteration 0)',
+  ]}
+  successCriteria={[
+    'pytest tests/order/test_status_transition.py passes',
+    'mypy src/orders/ is clean',
+    'pytest tests/order/ -q passes with no regressions',
+    'FR-4 JSON log written to loop-runs/',
+  ]}
+/>
+
+**Seeded pain:** concurrent status updates can leave an order in an inconsistent state.
+
+**Common agent failure:** fixes the failing assertion without addressing the underlying race — regression appears in `test_concurrent_fulfilment`.
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Reset branch',
+      body: '`git checkout workshop/oms-status-race-001 && git clean -fd`',
+    },
+    {
+      title: 'Iteration 0',
+      body: 'Run verifier manually. Copy failure output to a scratch file.',
+    },
+    {
+      title: 'Open Agent thread',
+      body: 'Fresh thread — no carryover from earlier demos.',
+    },
+    {
+      title: 'Load harness',
+      body: '@loop-discipline @loop-termination @loop-safety then /loop-engineering with task spec.',
+    },
+    {
+      title: 'Observe cycles',
+      body: 'Watch agent run verifier after edits. Count iterations.',
+    },
+    {
+      title: 'At green',
+      body: 'Run full regression gates yourself — trust but verify.',
+    },
+    {
+      title: 'Write log',
+      body: 'Save loop-runs/oms-status-race-001-<yourname>.json',
+    },
+    {
+      title: 'Debrief pair',
+      body: 'Compare iteration count and common_fails with neighbor.',
+    },
+  ]}
+/>
+
+## Example
+
+<PromptBlock
+  title="Copy-paste lab prompt"
+  prompt={`@loop-discipline @loop-termination @loop-safety
+
+/loop-engineering
+
+Task: oms-status-race-001
+Seeded state: concurrent status updates leave orders inconsistent; integration test is red.
+
+Verifier (after EVERY edit):
+  pytest tests/order/test_status_transition.py -x
+
+Regression gates (required before done):
+  mypy src/orders/
+  pytest tests/order/ -q
+
+Budget: 8 iterations. Stop if blocked 3x on same error.`}
+/>
+
+## Common mistakes
+
+### Symptom-only fix
+**Symptom:** Primary test green; suite fails.  
+**Fix:** Regression gate is part of definition of done — loop continues.
+
+### Human becomes verifier
+**Symptom:** You run tests but agent does not.  
+**Fix:** Re-prompt with explicit "you must run verifier after each edit."
+
+### Thread pollution
+**Symptom:** Earlier demo context skews results.  
+**Fix:** New Agent thread for lab.
+
+:::tip Official Docs
+[Agent mode](https://cursor.com/docs/agent)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="lab-first"
+  items={[
+    {id: 'iter0', label: 'Iteration 0 captured (verifier red)'},
+    {id: 'green', label: 'All gates green'},
+    {id: 'log', label: 'JSON log written'},
+    {id: 'iters', label: 'Iterations within expected_iters (3-5) or blocked with summary'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+<KnowledgeCheck
+  courseId="loop-engineering"
+  quizId="lab-quiz"
+  questions={[
+    {
+      id: 'q1',
+      prompt: 'What is the most common failure mode on this task?',
+      options: [
+        { id: 'a', label: 'Agent cannot find the test file' },
+        { id: 'b', label: 'Agent fixes assertion without fixing the race' },
+        { id: 'c', label: 'Verifier passes on seeded state' },
+        { id: 'd', label: 'Mypy is not installed' },
+      ],
+      correctId: 'b',
+      explanation:
+        'Documented in task common_fails — symptom patch passes primary test until concurrent case fails.',
+    },
+  ]}
+/>
+
+## Next Steps
+
+Continue to [Prompt vs Loop Demo →](./prompt-vs-loop-demo)

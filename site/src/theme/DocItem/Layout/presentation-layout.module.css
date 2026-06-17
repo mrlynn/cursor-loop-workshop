@@ -1,0 +1,39 @@
+/**
+ * Presentation layout overrides — paired with DocItem/Layout swizzle.
+ */
+
+.presentationDoc {
+  margin-top: -1.25rem;
+}
+
+.presentationCol {
+  max-width: 100% !important;
+  flex: 0 0 100% !important;
+}
+
+@media (min-width: 997px) {
+  .presentationColWithToc {
+    max-width: 75% !important;
+    flex: 0 0 75% !important;
+  }
+}
+
+.presentationDoc :global(.theme-doc-markdown) {
+  max-width: none;
+}
+
+/* Bleed presentation blocks to main-column edges (not 100vw — avoids horizontal scroll) */
+.presentationDoc :global(.cursor-presentation-hero),
+.presentationDoc :global(.cursor-section-banner),
+.presentationDoc :global(.cursor-chapter-header),
+.presentationDoc :global(.cursor-statement) {
+  width: calc(100% + 2 * var(--ifm-spacing-horizontal));
+  max-width: none;
+  margin-left: calc(-1 * var(--ifm-spacing-horizontal));
+  margin-right: calc(-1 * var(--ifm-spacing-horizontal));
+}
+
+/* Reduce container padding above presentation heroes */
+.docMainContainer:has(.presentationDoc) {
+  padding-top: 0 !important;
+}

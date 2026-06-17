@@ -1,0 +1,40 @@
+---
+description: Safety guardrails for unattended and semi-attended agentic loops. Apply during loop runs that execute terminal commands.
+alwaysApply: false
+---
+
+# Loop safety
+
+Loops run terminal commands. Treat every command as production-adjacent unless the task spec says otherwise.
+
+## Approval gates
+
+Before running **destructive** commands, pause for human approval:
+
+- `rm`, `git reset --hard`, `git push --force`, `drop`, `truncate`
+- Package publishes, infra deploys, or credential rotation
+- Any command the task spec marks as destructive
+
+Non-destructive verifiers (test, lint, build, read-only git) may run without asking each time — that is the point of the loop.
+
+## Auto-review awareness
+
+If Auto-review or Smart Mode blocks a command:
+
+1. Do not bypass with `--no-verify` or equivalent unless the human explicitly approves.
+2. Report the block reason in your iteration summary.
+3. Try an alternative non-destructive path if one exists.
+
+## Secret hygiene
+
+- Never print, commit, or log secrets from `.env` files.
+- Use `.env.example` patterns only in generated code.
+- Do not paste API keys into prompts or terminal commands visible in logs.
+
+## Hooks
+
+If the repo defines Cursor Hooks (pre-commit, before-shell, etc.), respect their outcomes. A hook failure is a verifier failure — diagnose before retrying.
+
+## Workshop context
+
+In facilitated sessions, **no task requires disabling safety guardrails** to complete. If you believe guardrails block legitimate progress, stop and escalate to the facilitator rather than weakening protections.

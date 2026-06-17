@@ -1,0 +1,141 @@
+---
+title: Loop Skills
+description: Package loop procedures as SKILL.md for on-demand progressive disclosure
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Rules & Skills" subtitle="Skills do — invoke /loop-engineering, /verifier-crafting, /run-comparison" />
+
+Skills are multi-step procedures the agent loads when relevant. Loop Engineering ships three skills that complement the rules.
+
+## Why this matters
+
+Rules passively guide; skills actively walk the agent through a procedure. Comparison demos, verifier design, and full loop execution are too heavy for always-apply rules but perfect for on-demand skills (Agent Skills open standard, Cursor v2.4+).
+
+## What you'll learn
+
+- You can structure a skill with YAML frontmatter (`name`, `description`)
+- You can invoke skills via `/skill-name` in Agent mode
+- You can map each workshop skill to a facilitator moment
+- You can decide rule vs skill using the three-times correction heuristic
+
+## How it works
+
+Skill layout:
+
+```
+.cursor/skills/loop-engineering/
+  SKILL.md          # required
+  reference.md      # optional deep docs
+  scripts/          # optional helpers
+```
+
+The `description` field is critical — the agent uses it for progressive disclosure (name + description first, body when matched).
+
+| Skill | Facilitator moment |
+|-------|-------------------|
+| `loop-engineering` | Learner runs first closed loop |
+| `verifier-crafting` | Authoring new corpus tasks |
+| `run-comparison` | Live A/B/C demo |
+
+## When to use this
+
+| Procedure | Skill | Rule |
+|-----------|-------|------|
+| Execute full loop with logging | `/loop-engineering` | `@loop-discipline` |
+| Design new verifier | `/verifier-crafting` | — |
+| Facilitate prompt vs loop demo | `/run-comparison` | — |
+| Every-edit verify reminder | — | `@loop-discipline` |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Inspect SKILL.md',
+      body: 'Open `.cursor/skills/loop-engineering/SKILL.md` — note frontmatter and procedure sections.',
+    },
+    {
+      title: 'Invoke in Agent',
+      body: 'Type `/loop-engineering` with task spec in same message.',
+    },
+    {
+      title: 'Pair with rules',
+      body: 'Same thread: `@loop-discipline @loop-termination` — rules + skill together.',
+    },
+    {
+      title: 'Author a team skill',
+      body: 'Copy structure for your domain: e.g., `deploy-staging/SKILL.md` with verifier steps.',
+    },
+    {
+      title: 'Description tuning',
+      body: 'If agent misses skill, broaden description: "verifiable task", "iterate until green".',
+    },
+  ]}
+/>
+
+## Example
+
+`loop-engineering` skill frontmatter (workshop repo):
+
+```yaml
+---
+name: loop-engineering
+description: >-
+  Run a disciplined agentic loop on a verifiable task: goal → act → verify →
+  correct → repeat until green or blocked. Use when executing a loop task
+  with a machine-checkable verifier.
+---
+```
+
+Facilitator invocation:
+
+```text
+@loop-discipline @loop-termination @loop-safety
+
+/loop-engineering
+
+Task: oms-status-race-001
+Verifier: pytest tests/order/test_status_transition.py
+Regression: mypy src/orders/
+Budget: 8 iterations
+```
+
+## Common mistakes
+
+### Skill body in a rule
+**Symptom:** Token bloat on every chat.  
+**Fix:** Procedures → skills; constraints → rules.
+
+### Vague description
+**Symptom:** Agent never auto-loads skill; facilitator must `/` every time.  
+**Fix:** Description lists triggers: "loop task", "verifier", "iterate until green".
+
+### Skill without verifier prerequisite
+**Symptom:** Loop runs on ambiguous tasks; guessing ensues.  
+**Fix:** `loop-engineering` skill says: stop if no verifier — use `verifier-crafting` first.
+
+:::tip Official Docs
+[Agent Skills](https://cursor.com/docs/context/skills) · [Skills standard](https://agentskills.io)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="rs-skills"
+  items={[
+    {id: 'three-skills', label: 'I reviewed all three workshop skills'},
+    {id: 'invoked', label: 'I invoked at least one skill in Agent mode'},
+    {id: 'pairing', label: 'I paired skills with @ rules in one thread'},
+  ]}
+/>
+
+<StatementBlock background="bg_9">
+  Rules and skills encode discipline. Next: compose the harness — CLI, Hooks, and guardrails.
+</StatementBlock>
+
+## Next Steps
+
+Continue to [The Harness →](../the-harness/overview)

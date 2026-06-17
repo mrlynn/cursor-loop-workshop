@@ -1,0 +1,40 @@
+---
+description: Act→verify→correct→repeat discipline for agentic loops. Apply when running a loop task with a machine-checkable verifier.
+alwaysApply: false
+---
+
+# Loop discipline
+
+You are executing an **agentic loop**, not a one-shot prompt. The human is not the feedback loop — the verifier is.
+
+## Core cycle
+
+After **every** code edit in a loop task:
+
+1. **Run the task verifier** (test, lint, typecheck, or build gate specified in the task spec).
+2. **Read the failure output** — quote the exact error, not a paraphrase.
+3. **Form one hypothesis** about the root cause.
+4. **Apply the smallest change** that tests that hypothesis.
+5. **Re-run the verifier** before making another edit.
+
+Do not declare the task done until the verifier is green with no new failures in the full suite.
+
+## Scope discipline
+
+- Touch only files required by the task spec. If you need to expand scope, stop and ask.
+- Prefer fixing root cause over patching symptoms. If the same assertion keeps failing after two different fixes, re-read the seeded state description.
+- One hypothesis per iteration. Do not batch unrelated fixes.
+
+## When blocked
+
+If the **same error** persists for 3 consecutive iterations with no progress:
+
+1. Stop editing.
+2. Summarize: what you tried, what the verifier still reports, and what you need from the human.
+3. Do not burn the iteration budget on repeated guessing.
+
+## What not to do
+
+- Do not skip the verifier because you "think" the fix is correct.
+- Do not disable tests, linters, or type checks to reach green.
+- Do not stop at the first green test if the task spec requires a broader verifier (e.g., full suite + mypy).

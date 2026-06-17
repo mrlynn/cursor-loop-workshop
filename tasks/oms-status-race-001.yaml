@@ -1,0 +1,20 @@
+task_id: oms-status-race-001
+rung: 2
+area: order lifecycle
+seeded_state: >
+  Concurrent status updates can leave an order in an inconsistent state;
+  one integration test is red.
+verifier: pytest tests/order/test_status_transition.py
+regression_gates:
+  - mypy src/orders/
+  - ruff check src/orders/
+  - pytest tests/order/ -q
+reference: patches/oms-status-race-001.patch
+expected_iters: 3-5
+common_fails: >
+  Agent fixes the symptom (the failing assertion) without addressing the
+  underlying race; regression appears in test_concurrent_fulfilment.
+termination:
+  success: green AND no regressions
+  max_iterations: 8
+  blocked_after_same_error: 3

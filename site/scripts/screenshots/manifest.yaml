@@ -1,0 +1,107 @@
+# Cursor product screenshot manifest
+# Run: ./capture-macos.sh (interactive) or ./capture-macos.sh --scene <id>
+# See reference/screenshots.md for full workflow.
+
+version: 1
+
+defaults:
+  app: Cursor
+  theme: dark
+  capture: window
+  output_root: static/img/screenshots
+
+scenes:
+  - id: indexing-status-bar
+    section: getting-started
+    doc: getting-started/first-steps
+    alt: Cursor status bar indicating codebase indexing is complete
+    caption: Wait for indexing to finish before scoped prompts — status bar indicator.
+    interactive_hint: >-
+      Open the workshop sample repo. Wait until indexing completes (status bar).
+      Use dark theme. Hide unrelated panels.
+    output: indexing-status-bar.png
+
+  - id: privacy-mode-settings
+    section: getting-started
+    doc: getting-started/installation
+    alt: Cursor Settings with Privacy Mode visible
+    caption: Confirm Privacy Mode matches your organization policy before labs.
+    interactive_hint: >-
+      Open Cursor Settings (Cmd+Shift+J). Navigate to Privacy / data settings.
+    steps:
+      - activate
+      - shortcut: cmd+shift+j
+      - wait: 0.8
+    output: privacy-mode-settings.png
+
+  - id: at-file-mention
+    section: understand-the-codebase
+    doc: understand-the-codebase/context-mentions
+    alt: Chat input with an @file mention scoped to a repository path
+    caption: Scope reads with @file before asking the agent to edit.
+    interactive_hint: >-
+      Open Chat or Composer. Type @ and select a real file from the sample repo.
+    output: at-file-mention.png
+
+  - id: plan-mode-exploration
+    section: understand-the-codebase
+    doc: understand-the-codebase/exploration-lab
+    alt: Plan mode thread exploring codebase structure without edits
+    caption: Plan mode first — map the repo before multi-file edits.
+    interactive_hint: >-
+      Start a Plan mode thread. Ask a read-only exploration question about the repo.
+    output: plan-mode-exploration.png
+
+  - id: agent-scoped-prompt
+    section: agent-mode
+    doc: agent-mode/prompting
+    alt: Agent mode with explicit file scope and verification steps in the prompt
+    caption: Name files, constraints, and how to verify before Accept.
+    interactive_hint: >-
+      Open Agent mode. Paste a scoped prompt that references @folder or @file.
+    output: agent-scoped-prompt.png
+
+  - id: agent-diff-review
+    section: agent-mode
+    doc: agent-mode/best-practices
+    alt: Agent diff view showing changed files before accept
+    caption: Read the full diff — reject scope creep and unrelated file changes.
+    interactive_hint: >-
+      Run a small agent task that touches 2–3 files. Stop at the diff review step.
+    output: agent-diff-review.png
+
+  - id: rules-mdc-example
+    section: rules-and-skills
+    doc: rules-and-skills/creating-rules
+    alt: Example .cursor/rules file in the repository tree
+    caption: Team rules live in Git — .mdc files with explicit activation scopes.
+    interactive_hint: >-
+      Open the sample repo .cursor/rules/ folder in the editor sidebar.
+    output: rules-mdc-example.png
+
+  - id: skills-invocation
+    section: rules-and-skills
+    doc: rules-and-skills/when-to-use-skills
+    alt: Agent chat showing a skill invoked by name
+    caption: Skills load on demand — use when a workflow needs progressive disclosure.
+    interactive_hint: >-
+      Invoke a /skill or skill picker in Agent chat (if configured in sample repo).
+    output: skills-invocation.png
+
+  - id: bugbot-pr-comment
+    section: review-and-bugbot
+    doc: review-and-bugbot/bugbot-workflows
+    alt: Bugbot comment on a pull request with a findings summary
+    caption: Triage Bugbot after self-review — fix or dismiss with a short rationale.
+    interactive_hint: >-
+      Open a sample PR with Bugbot enabled, or Cursor docs reference screenshot.
+    output: bugbot-pr-comment.png
+
+  - id: layered-review-stack
+    section: review-and-bugbot
+    doc: review-and-bugbot/overview
+    alt: PR review checklist showing self-review, tests, Bugbot, and human approval
+    caption: Same merge bar regardless of whether the diff was agent-generated.
+    interactive_hint: >-
+      Optional — use a slide-style annotated image or staged PR review UI.
+    output: layered-review-stack.png

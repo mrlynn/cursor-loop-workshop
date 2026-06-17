@@ -1,0 +1,148 @@
+---
+title: Creating Loop Rules
+description: Author .mdc rules for act→verify discipline, termination, and safety
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Rules & Skills" subtitle="Write portable .mdc files the team commits to Git" />
+
+Loop rules are the harness's nervous system. They turn facilitator verbal habits into context the agent loads every loop run.
+
+## Why this matters
+
+Without rules, each Agent thread re-negotiates discipline. Cohort comparisons become incomparable. Committed `.mdc` files satisfy FR-6 and scale train-the-trainer delivery.
+
+## What you'll learn
+
+- You can author a rule in `.cursor/rules/*.mdc` with frontmatter and activation modes
+- You can structure loop-discipline, termination, and safety as three focused rules
+- You can choose `alwaysApply` vs manual `@` reference for token budget
+- You can adapt workshop rules to your team's repo with minimal edits
+
+## How it works
+
+Cursor rules use `.mdc` format:
+
+```yaml
+---
+description: One line the agent reads for "Apply Intelligently"
+alwaysApply: false
+globs: optional/path/**/*
+---
+# Rule body (markdown)
+```
+
+**Activation modes for loop work:**
+
+| Mode | Loop use case |
+|------|---------------|
+| Always Apply | Only for tiny universal hygiene — avoid for full discipline |
+| Apply Intelligently | `description` mentions "agentic loop" / "verifier" |
+| Apply to Specific Files | Rules scoped to `tests/**` or task directories |
+| Manual `@loop-discipline` | **Workshop default** — facilitator controls inclusion |
+
+Keep each rule under ~80 lines. One concern per file.
+
+## When to use this
+
+| Rule file | Activate when |
+|-----------|---------------|
+| `loop-discipline.mdc` | Every rung 2+ loop thread |
+| `loop-termination.mdc` | Tasks with iteration budgets |
+| `loop-safety.mdc` | Any loop running shell commands |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Create file',
+      body: '`.cursor/rules/loop-discipline.mdc` — copy from workshop repo or start from template below.',
+    },
+    {
+      title: 'Frontmatter',
+      body: 'Set `description` for intelligent apply; keep `alwaysApply: false` for workshops.',
+    },
+    {
+      title: 'Core cycle',
+      body: 'Document: edit → run verifier → read output → one hypothesis → smallest change.',
+    },
+    {
+      title: 'Blocked clause',
+      body: 'In termination rule: 3× same error → stop and summarize.',
+    },
+    {
+      title: 'Safety clause',
+      body: 'List destructive commands requiring approval; never disable tests to green.',
+    },
+    {
+      title: 'Commit',
+      body: 'PR to team repo; facilitators pull before each cohort.',
+    },
+    {
+      title: 'Verify',
+      body: 'Agent thread with `@loop-discipline` — ask agent to restate the cycle.',
+    },
+  ]}
+/>
+
+## Example
+
+Minimal `loop-discipline.mdc` body (full version in workshop repo):
+
+```markdown
+# Loop discipline
+
+After **every** code edit:
+1. Run the task verifier.
+2. Read the failure output — quote the exact error.
+3. Form **one** hypothesis.
+4. Apply the **smallest** change that tests it.
+5. Re-run before another edit.
+
+Do not declare done until verifier is green with no new failures.
+```
+
+Loop rule excerpt from PRD Appendix A:
+
+```markdown
+After each edit, run the task verifier. If red, read the failure, form one
+hypothesis, apply the smallest change that tests it, and re-run. Do not declare
+done until the verifier is green with no new failures. If blocked for 3 iterations
+on the same error, stop and summarize.
+```
+
+## Common mistakes
+
+### One mega-rule
+**Symptom:** Discipline + safety + style in 300 lines; team disables it.  
+**Fix:** Three files: discipline, termination, safety.
+
+### alwaysApply: true for discipline
+**Symptom:** Tab completions get loop instructions.  
+**Fix:** Manual `@` or intelligent apply with precise description.
+
+### Rules without description
+**Symptom:** Intelligent apply never triggers.  
+**Fix:** Description must say "agentic loop", "verifier", "iterate until green".
+
+:::tip Official Docs
+Rule format and activation: [cursor.com/docs/context/rules](https://cursor.com/docs/context/rules)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="rs-rules"
+  items={[
+    {id: 'three-files', label: 'Three loop rules committed to .cursor/rules'},
+    {id: 'activation', label: 'Activation mode chosen per rule'},
+    {id: 'restate', label: 'Agent can restate cycle when @ referenced'},
+  ]}
+/>
+
+## Next Steps
+
+Continue to [Loop Skills →](./loop-skills)

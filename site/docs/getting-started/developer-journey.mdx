@@ -1,0 +1,128 @@
+---
+title: Developer Journey
+description: From Tab completion through prompting, Agent mode, and Cloud agents toward an AI-first SDLC — with looping on the continuum
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Getting Started"
+  title="The Developer Journey"
+  subtitle="Autonomy increases along a continuum. Loop ownership shifts from you to the verifier."
+  variant="image"
+  agendaItems={[
+    { label: 'Walk the autonomy continuum' },
+    { label: 'See who closes the feedback loop' },
+    { label: 'Map SDLC modes across the journey' },
+  ]}
+/>
+
+Most developers do not jump straight to Cloud agents. They arrive through Tab, prompting, and supervised Agent mode — and many plateau at **prompt mode** because the feedback loop never leaves their head. Loop Engineering sits on that same continuum: it does not replace earlier surfaces; it shows when to escalate and how to make the loop machine-checkable.
+
+## The autonomy continuum
+
+Click each stage to see the Cursor surface, who closes the feedback loop, and when to escalate. Bar height reflects relative autonomy — not "better," but **more execution delegated to the agent**.
+
+<AutonomyJourneyDiagram defaultStage="chat-composer" />
+
+<InstructorNote timing="8 min">
+Project this page in presenter mode. Pause on **Chat & Composer** — ask who still lives here. Then advance to **Loop Engineering** and ask what changes when a verifier closes the loop. The dashed arc above the track is the loop discipline intensifying, not a separate product.
+</InstructorNote>
+
+## Who closes the feedback loop?
+
+Prompt mode and Loop Engineering are the same underlying cycle — goal, act, judge, repeat — with one structural difference: **who reads the signal**.
+
+<LoopFeedbackDiagram />
+
+At **Rung 0** (Chat, Composer, Inline), you judge every output. At **Rung 2+** (Loop Engineering), the verifier returns pass/fail and the agent iterates until green, blocked, or budget. That shift is the workshop's core thesis: engineering leverage moves from prompt-crafting to **verifier-crafting**.
+
+## AI-first SDLC on the same continuum
+
+Plan, Build, Debug, and Review are not a separate ladder — they apply at **every** stage of the journey. What changes is how much of each mode runs through a loop vs. a one-shot prompt.
+
+<SdlcAutonomyMap />
+
+**AI-first SDLC** is the destination practice: pick the right operating mode per task, escalate along the continuum when verifiers exist, and apply layered review (self → tests → Bugbot → human) regardless of who generated the diff.
+
+## How looping sits on the continuum
+
+| Journey stage | Loop behavior | Human role |
+|---------------|---------------|------------|
+| Tab / Inline | No loop — accept/reject in flow | In the editor |
+| Chat / Composer | You re-prompt until satisfied | You are the loop |
+| Agent (supervised) | Agent may re-run; you approve each turn | Hybrid |
+| Loop Engineering | Act → verify → correct → repeat | Review at green |
+| Cloud / Background | Async loop with budget + Hooks | Review the PR |
+| AI-first SDLC | Loops where verifiable; prompts where not | Mode picker + review layers |
+
+The autonomy ladder (rungs 0–3) maps to the middle of this continuum — from prompt-only through async loops. Tab and Inline sit **before** rung 0; AI-first SDLC sits **after** rung 3 as team practice.
+
+## What you'll learn
+
+- You can place Tab, prompting, Agent, Cloud, and AI SDLC on one continuum
+- You can explain when the human vs. the verifier closes the feedback loop
+- You can map Plan / Build / Debug / Review across journey stages
+- You can name where Loop Engineering attaches (Rung 2+) without discarding earlier surfaces
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Walk the continuum',
+      body: 'Click each stage on the diagram above. Note escalate hints.',
+    },
+    {
+      title: 'Mark yourself',
+      body: 'Which stage is your default for a typical bug fix? For exploration?',
+    },
+    {
+      title: 'Compare loops',
+      body: 'Study the prompt vs. loop diagram. Who runs the verifier in each?',
+    },
+    {
+      title: 'SDLC row',
+      body: 'Pick one row (e.g., Debug). Read across columns — where do you spend time today?',
+    },
+    {
+      title: 'Name one escalator',
+      body: 'One task this week that has a failing test — that is your verifier escalator.',
+    },
+  ]}
+/>
+
+## Common mistakes
+
+### Skipping the continuum
+**Symptom:** "Just use Agent for everything."  
+**Fix:** Tab and Inline remain correct for in-flow edits. Escalate when task shape demands it.
+
+### Loops without verifiers on the continuum
+**Symptom:** Agent mode with no test command — still prompt mode with terminal.  
+**Fix:** Loop Engineering attaches at the stage where a machine-checkable signal exists.
+
+### SDLC modes as a separate product map
+**Symptom:** "Plan mode is only for week one."  
+**Fix:** Plan / Build / Debug / Review rotate daily; the continuum is about autonomy, not sequence.
+
+:::tip Official Docs
+Surfaces overview: [cursor.com/docs](https://cursor.com/docs) · Agent: [cursor.com/docs/agent](https://cursor.com/docs/agent)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="gs-journey"
+  items={[
+    {id: 'continuum', label: 'I clicked through all continuum stages'},
+    {id: 'loop-owner', label: 'I can say who closes the loop at Rung 0 vs Rung 2'},
+    {id: 'sdlc-row', label: 'I read one SDLC row across all columns'},
+    {id: 'escalator', label: 'I named one task I could escalate with a verifier'},
+  ]}
+/>
+
+## Next Steps
+
+Continue to [Autonomy Ladder →](./autonomy-ladder) for rung definitions, verifier scope, and human checkpoints — or jump to [Loop Fundamentals →](../loop-fundamentals/overview) to engineer the four surfaces.

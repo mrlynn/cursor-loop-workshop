@@ -1,0 +1,16 @@
+task_id: comparison-prompt-baseline-001
+rung: 0
+area: measurement
+seeded_state: >
+  Same bug as a rung-2 task but solved via prompt-only arm A — human runs verifier manually.
+verifier: pytest tests/order/test_status_transition.py
+regression_gates: []
+expected_iters: 1
+common_fails: >
+  Facilitator leaks verifier into Chat prompt; arm A must not include test command in prompt.
+termination:
+  success: human declares done after manual verifier run
+  max_iterations: 1
+  blocked_after_same_error: 0
+byo:
+  notes: Use with /run-comparison skill. Pair with oms-status-race-001 or your BYO task for arm B.

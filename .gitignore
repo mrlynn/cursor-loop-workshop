@@ -1,0 +1,28 @@
+# Dependencies and build output
+site/node_modules/
+site/build/
+site/.docusaurus/
+
+# Loop run metrics (local / per-learner) — keep directory, ignore JSON
+loop-runs/*
+!loop-runs/.gitkeep
+**/loop-runs/*.json
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# OS and editor
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Optional local lab checkout (if cloned beside workshop for dev)
+atlas-oms/

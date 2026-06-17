@@ -1,0 +1,17 @@
+task_id: type-narrowing-handler-001
+rung: 1
+area: api handlers
+seeded_state: >
+  mypy reports incompatible return type in one handler; single module is red.
+verifier: mypy src/api/handlers/order.py
+regression_gates:
+  - pytest tests/api/test_order_handlers.py -q
+expected_iters: 2-3
+common_fails: >
+  Agent adds cast() or ignore comments instead of narrowing; breaks runtime if tests cover branches.
+termination:
+  success: green AND no regressions
+  max_iterations: 6
+  blocked_after_same_error: 3
+byo:
+  notes: Rung 1 pattern — supervised agent, narrow verifier. Swap paths for your handler module.

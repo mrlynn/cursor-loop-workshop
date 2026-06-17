@@ -1,0 +1,48 @@
+---
+description: Termination conditions and iteration budgets for agentic loops. Apply when a loop task specifies max iterations, token ceiling, or stop conditions.
+alwaysApply: false
+---
+
+# Loop termination
+
+A loop without a stop condition is expensive guessing. Honor these termination rules on every loop run.
+
+## Stop when green
+
+Declare success only when **all** verifiers in the task spec pass:
+
+- Primary verifier (e.g., target test file)
+- Regression gates (full suite, lint, typecheck) if specified
+- No new failures introduced since the seeded state
+
+## Stop when blocked
+
+Stop and summarize when:
+
+- The same verifier error repeats for **3 iterations** with no change in failure mode
+- A required dependency, credential, or external service is unavailable
+- The task spec is ambiguous about definition of done
+
+Output a blocked summary: hypothesis history, last verifier output, and what the human must decide.
+
+## Budget ceilings
+
+Respect task-level budgets when present:
+
+| Budget type | Default action at ceiling |
+|-------------|---------------------------|
+| Max iterations (e.g., 8) | Stop, report best partial state and remaining failures |
+| Token / cost ceiling | Stop before next agent turn, log spend so far |
+| Wall-clock timeout | Finish current verifier run, then stop |
+
+Never silently extend a budget. If you believe more iterations would succeed, say so in the summary and let the human re-arm the loop.
+
+## Regression handling
+
+If fixing the primary verifier **breaks** a previously passing test:
+
+1. Treat as a regression — the loop is not green.
+2. Note the regression in your iteration log.
+3. Prefer reverting the last change and trying a different hypothesis.
+
+Count regressions in the run metrics (regression count is a first-class signal).

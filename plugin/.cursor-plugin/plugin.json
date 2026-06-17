@@ -1,0 +1,33 @@
+{
+  "name": "loop-engineering",
+  "displayName": "Loop Engineering",
+  "version": "0.1.0",
+  "description": "Agentic loop harness: rules, skills, and commands for act→verify→correct→repeat. Verifier-driven loops for advanced Cursor users and workshop delivery.",
+  "author": {
+    "name": "Cursor Customer Education"
+  },
+  "homepage": "https://github.com/cursor-education/loop-engineering",
+  "repository": "https://github.com/cursor-education/loop-engineering",
+  "license": "MIT",
+  "category": "developer-tools",
+  "tags": [
+    "agent-mode",
+    "loops",
+    "testing",
+    "verifiers",
+    "workshop"
+  ],
+  "keywords": [
+    "loop engineering",
+    "agentic loop",
+    "verifier",
+    "agent mode",
+    "cursor rules",
+    "skills",
+    "TDD",
+    "comparison harness"
+  ],
+  "skills": "./skills/",
+  "rules": "./rules/",
+  "commands": "./commands/"
+}

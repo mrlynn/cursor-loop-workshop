@@ -1,0 +1,133 @@
+---
+title: The Loop Harness
+description: Compose Agent mode, rules, CLI, and Hooks into a reproducible loop substrate
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="The Harness"
+  title="The Loop Harness"
+  subtitle="Turn Agent mode into a disciplined, reproducible loop — not improv"
+  variant="image"
+  agendaItems={[
+    { label: 'CLI wrapper for cohort runs' },
+    { label: 'Hooks and Auto-review guardrails' },
+  ]}
+/>
+
+The harness (PRD §6.2) assembles existing Cursor primitives. No new product surface — composition only.
+
+## Why this matters
+
+Hand-driven loops do not scale to cohorts. Facilitators need one-command reproducibility (FR-3) and guardrails so unattended loops stay safe (FR-7). The harness is how Loop Engineering ships V2 while V0 workshops run manually.
+
+## What you'll learn
+
+- You can map Agent mode, rules, CLI, Hooks, and Background agents to harness components
+- You can describe the V0 manual harness vs V2 scripted harness
+- You can explain why Hooks and Auto-review are not optional for rung 3
+- You can port the harness to a learner's repo with minimal edits
+
+## How it works
+
+```
+┌──────────────────────────────────────────────────────────┐
+│                    LOOP HARNESS                          │
+├─────────────┬─────────────┬─────────────┬────────────────┤
+│ Agent mode  │ .cursor/    │ Cursor CLI  │ Hooks + Auto-  │
+│ loop engine │ rules       │ cursor-agent│ review gates   │
+├─────────────┴─────────────┴─────────────┴────────────────┤
+│ Comparison arm logs → loop-runs/*.json                   │
+└──────────────────────────────────────────────────────────┘
+```
+
+- **Agent mode** — runs commands/tests, iterates (§11 primitive)
+- **`.cursor/rules`** — discipline + termination (portable, FR-6)
+- **Cursor CLI** — `cursor-agent` for scripted A/B/C (V2, FR-3)
+- **Hooks + Auto-review** — approval on destructive commands (FR-7)
+- **Background / Cloud + worktrees** — Rung 3 async arm
+
+## When to use this
+
+| Harness piece | V0 workshop | V2 production |
+|---------------|-------------|---------------|
+| Agent + rules | ✓ Manual | ✓ |
+| CLI wrapper | Facilitator optional | ✓ `loop-harness.sh` |
+| Hooks | Demo only | ✓ Required rung 3 |
+| Background | Optional demo | ✓ Cohort arm C |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Inventory primitives',
+      body: 'Confirm Agent mode, rules committed, CLI installed (`curl https://cursor.com/install -fsSL | bash`).',
+    },
+    {
+      title: 'Manual harness',
+      body: 'Facilitator runs B arm: rules + skill + verifier — log JSON manually.',
+    },
+    {
+      title: 'CLI smoke test',
+      body: ':::caution VERIFY — run `cursor-agent --help` and confirm flags against cursor.com/docs/cli.',
+    },
+    {
+      title: 'Hooks review',
+      body: 'If repo has `.cursor/hooks.json`, read before-shell hooks; explain to cohort.',
+    },
+    {
+      title: 'Document port path',
+      body: 'List what learners change: verifier path, budget, `.cursorignore`.',
+    },
+  ]}
+/>
+
+## Example
+
+Primitive mapping from PRD §11:
+
+```text
+Agent mode      → loop engine (act → observe → correct)
+.cursor/rules   → discipline + termination
+Hooks + Auto-review → guardrails for unattended runs
+Cursor CLI      → reproducible scripted harness
+Background/Cloud → Rung-3 asynchronous arm
+```
+
+## Common mistakes
+
+### Harness without rules
+**Symptom:** CLI runs unconstrained agent; results vary wildly.  
+**Fix:** Rules are part of the harness, not optional metadata.
+
+### Disabling Auto-review for speed
+**Symptom:** Workshop incident; FR-7 violation.  
+**Fix:** No task requires disabling guardrails.
+
+### CLI as only path
+**Symptom:** Learners cannot loop without headless setup.  
+**Fix:** Teach manual harness first; CLI is acceleration.
+
+:::tip Official Docs
+[CLI](https://cursor.com/docs/cli) · [Hooks](https://cursor.com/docs/hooks)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="harness-overview"
+  items={[
+    {id: 'map', label: 'I can map five primitives to harness diagram'},
+    {id: 'v0v2', label: 'I understand V0 manual vs V2 scripted harness'},
+    {id: 'fr7', label: 'I know FR-7: no disabling safety'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+## Next Steps
+
+Continue to [CLI Harness →](./cli-harness)

@@ -1,0 +1,38 @@
+{
+  "version": "0.1.0",
+  "tasks": [
+    {
+      "id": "oms-status-race-001",
+      "rung": 2,
+      "area": "order lifecycle",
+      "verifier": "pytest tests/order/test_status_transition.py",
+      "expected_iters": "3-5",
+      "lab_branch": "workshop/oms-status-race-001",
+      "source": "atlas-oms"
+    },
+    {
+      "id": "lint-gate-stale-import-001",
+      "rung": 2,
+      "area": "code hygiene",
+      "verifier": "ruff check src/orders/",
+      "expected_iters": "2-4",
+      "source": "byo-pattern"
+    },
+    {
+      "id": "type-narrowing-handler-001",
+      "rung": 1,
+      "area": "api handlers",
+      "verifier": "mypy src/api/handlers/order.py",
+      "expected_iters": "2-3",
+      "source": "byo-pattern"
+    },
+    {
+      "id": "comparison-prompt-baseline-001",
+      "rung": 0,
+      "area": "measurement",
+      "verifier": "pytest tests/order/test_status_transition.py",
+      "expected_iters": "1",
+      "source": "comparison-arm-a"
+    }
+  ]
+}

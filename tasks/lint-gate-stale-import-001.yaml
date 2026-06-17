@@ -1,0 +1,17 @@
+task_id: lint-gate-stale-import-001
+rung: 2
+area: code hygiene
+seeded_state: >
+  Unused imports and one shadowed variable fail ruff in src/orders/; CI lint gate is red.
+verifier: ruff check src/orders/
+regression_gates:
+  - pytest tests/order/ -q
+expected_iters: 2-4
+common_fails: >
+  Agent adds # noqa or edits ruff config instead of fixing imports; regression if tests import removed symbols.
+termination:
+  success: green AND no regressions
+  max_iterations: 6
+  blocked_after_same_error: 3
+byo:
+  notes: Generic BYO pattern — swap path for your package. Works in any Python repo with ruff.

@@ -1,0 +1,27 @@
+# Copy to tasks/<your-task-id>.yaml and fill every field.
+# Run: ./scripts/scaffold-byo-task.sh (interactive) or copy manually.
+# Validate: verifier must FAIL on seeded state, PASS after your fix.
+
+task_id: YOUR-TASK-ID          # kebab-case, unique in corpus
+rung: 2                        # 0=prompt 1=supervised agent 2=loop rules 3=background
+area: YOUR-DOMAIN              # e.g. payments, auth, api-gateway
+seeded_state: >
+  One sentence: what is broken and why the verifier fails today.
+verifier: YOUR-PRIMARY-VERIFIER-COMMAND
+regression_gates:
+  - YOUR-BROADER-TEST-SUITE-COMMAND
+  - YOUR-LINT-OR-TYPECHECK-COMMAND
+reference: patches/YOUR-TASK-ID.patch   # optional; facilitator-only
+expected_iters: 3-5
+common_fails: >
+  How agents typically fake green without fixing root cause.
+termination:
+  success: green AND no regressions
+  max_iterations: 8
+  blocked_after_same_error: 3
+byo:
+  repo: /path/to/your/repo
+  branch: optional-branch-name
+  files_likely_touched:
+    - src/example/module.py
+  notes: Optional facilitator or author notes

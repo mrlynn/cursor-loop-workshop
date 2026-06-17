@@ -1,0 +1,139 @@
+---
+title: Measurement
+description: Log loop-vs-prompt metrics and produce credible evidence for skeptical engineers
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Measurement"
+  title="The Evidence Layer"
+  subtitle="Hold the task constant; vary only the method — then log honest deltas"
+  variant="image"
+  agendaItems={[
+    { label: 'Run the A/B/C comparison arm' },
+    { label: 'Interpret metrics without hiding cost' },
+  ]}
+/>
+
+Adoption conversations fail on assertion. The comparison arm (PRD §6.3) produces side-by-side data: same task, different method, structured logs.
+
+## Why this matters
+
+Skeptical engineers need proof. The framework's honest framing: loops often cost more tokens and sometimes more wall-clock — they win on human interventions and pass rate when a real verifier exists. Hiding cost destroys credibility.
+
+## What you'll learn
+
+- You can run methods A, B, and C on the same versioned task
+- You can log FR-4 metrics per run
+- You can present pass rate and human interventions alongside token cost
+- You can aggregate cohort results for pre/post rung movement
+
+## How it works
+
+**Comparison arm** holds task constant, varies method:
+
+| Arm | Method | Verifier |
+|-----|--------|----------|
+| A | Prompt-only | Human judges (then runs verifier) |
+| B | Agent loop + rules | Machine-checkable |
+| C | Background / Cloud | Full verifier + budget |
+
+Each run appends to `loop-runs/<task_id>/*.json` for aggregation.
+
+**Framework metrics (§9):**
+
+| Metric | What it shows |
+|--------|---------------|
+| Pass@1 | First complete attempt correct |
+| Iterations-to-green | Loop efficiency |
+| Human interventions | True autonomy |
+| Wall-clock | Practical speed |
+| Token / dollar cost | Economic trade-off |
+| Regression count | Collateral breakage |
+
+## When to use this
+
+| Audience | Show |
+|----------|------|
+| Skeptical IC | A vs B on one task live |
+| Engineering manager | Cohort pass rate + human interventions |
+| Finance | Token cost alongside pass rate — both axes |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Pin task version',
+      body: 'Checkout tagged task branch — same seed for all arms.',
+    },
+    {
+      title: 'Run arm A',
+      body: 'Chat prompt without verifier; human applies fix; human runs pytest.',
+    },
+    {
+      title: 'Log arm A',
+      body: 'Record pass@1, interventions, wall-clock.',
+    },
+    {
+      title: 'Run arm B',
+      body: '/run-comparison skill — rules + loop-engineering + verifier.',
+    },
+    {
+      title: 'Log arm B',
+      body: 'Same JSON schema; add iterations_to_green, regression_count.',
+    },
+    {
+      title: 'Debrief',
+      body: 'Show cost AND wins — ask "when would you pay for this?"',
+    },
+  ]}
+/>
+
+## Example
+
+Use `/run-comparison` skill invocation from rules-and-skills section. Cohort aggregation:
+
+```text
+oms-status-race-001 | cohort-2026-06
+  Arm A: pass@1 12%  | interventions avg 4.2
+  Arm B: pass@1 68%  | interventions avg 0.4 | iter avg 3.8
+  Arm B: token cost +40% vs A (report honestly)
+```
+
+## Common mistakes
+
+### Different tasks per arm
+**Symptom:** Comparison is meaningless.  
+**Fix:** FR-8 — versioned corpus; same `task_id`.
+
+### Cherry-picked metrics
+**Symptom:** Audience distrusts workshop forever.  
+**Fix:** Report wall-clock and token cost even when loop loses.
+
+### No arm A baseline
+**Symptom:** Learners never feel prompt-mode cognitive load.  
+**Fix:** Always demo A before B.
+
+:::tip Official Docs
+[Agent overview](https://cursor.com/docs/agent)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="measure-overview"
+  items={[
+    {id: 'abc', label: 'I can name arms A, B, C'},
+    {id: 'metrics', label: 'I can list six framework metrics'},
+    {id: 'honest', label: 'I will report cost alongside pass rate'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+## Next Steps
+
+Continue to [Comparison Arm →](./comparison-arm)

@@ -1,0 +1,113 @@
+---
+title: FAQ
+description: Loop Engineering workshop — setup, daily workflow, security, troubleshooting
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="FAQ"
+  title="Frequently Asked Questions"
+  subtitle="Loop discipline, verifiers, rules, skills, and measurement"
+  variant="image"
+/>
+
+<FaqNav
+  items={[
+    {id: 'setup', label: 'Setup'},
+    {id: 'workflow', label: 'Daily workflow'},
+    {id: 'security', label: 'Security'},
+    {id: 'troubleshooting', label: 'Troubleshooting'},
+  ]}
+/>
+
+<FaqSection eyebrow="Setup" title="Install and environment" id="setup">
+
+<FaqItem question="What do I need before the workshop?" defaultOpen>
+Two repositories: this **loop-engineering** workshop repo (curriculum + harness) and **atlas-oms** (lab codebase). Run `./scripts/setup-workshop.sh` then `./scripts/copy-harness.sh` from the workshop root. Open **atlas-oms** in Cursor for labs; run `site/npm start` separately for the curriculum. Confirm indexing and a red verifier on the task branch before session start.
+</FaqItem>
+
+<FaqItem question="Where are the loop rules and skills?">
+In the workshop `loops` repo under `.cursor/rules/` (three `.mdc` files) and `.cursor/skills/` (`loop-engineering`, `verifier-crafting`, `run-comparison`). Commit them to your team repo for cohort consistency.
+</FaqItem>
+
+<FaqItem question="What is atlas-oms?">
+A deliberately aged B2B Order Management System used as the loop task substrate. Seeded pain points become verifiable loop tasks once you attach a test or lint gate. See the PRD for the `oms-status-race-001` example spec.
+</FaqItem>
+
+<FaqItem question="Do I need the Cursor CLI for the workshop?">
+Not for V0. Manual Agent mode loops with rules and skills are sufficient. The CLI (`cursor-agent`) is the V2 harness path for one-command A/B/C runs. Install via the official script at cursor.com/docs/cli.
+</FaqItem>
+
+</FaqSection>
+
+<FaqSection eyebrow="Daily workflow" title="Loops vs prompts" id="workflow">
+
+<FaqItem question="What is the difference between a prompt and a loop?" defaultOpen>
+A prompt is one-shot; you judge the output. A loop is goal → act → run a machine-checkable verifier → correct → repeat until green or blocked. The verifier closes the feedback loop, not you.
+</FaqItem>
+
+<FaqItem question="When should I stay on prompt mode (rung 0)?">
+Tab, Inline Edit, and Chat remain right for single-line completions, exploration, and tasks with no objective definition of done. Escalate to a loop when you have a failing test, lint gate, or build you can run automatically.
+</FaqItem>
+
+<FaqItem question="What is the highest-leverage surface in Loop Engineering?">
+The verifier. Invest in pass/fail success criteria before polishing the prompt. Use the `/verifier-crafting` skill when authoring new tasks.
+</FaqItem>
+
+<FaqItem question="How do rules and skills differ for loops?">
+Rules passively guide (verify after every edit, termination, safety). Skills are on-demand procedures (`/loop-engineering`, `/run-comparison`). Rule of thumb: rules guide, skills do, commands trigger.
+</FaqItem>
+
+<FaqItem question="What does /loop mean in Cursor?">
+:::caution VERIFY
+`/loop` is a separate Cursor feature for scheduled recurring agent work (e.g. `/loop 5m check deploy`). It is not the same as the Loop Engineering act→verify cycle, though both involve repetition. Confirm current `/loop` syntax in cursor.com/docs.
+:::
+Loop Engineering uses Agent mode with verifiers; the `/loop` command is for time-based or event-based wake schedules.
+</FaqItem>
+
+</FaqSection>
+
+<FaqSection eyebrow="Security" title="Safety and hygiene" id="security">
+
+<FaqItem question="Can unattended loops run destructive commands?">
+Workshop policy (FR-7): no task requires disabling guardrails. The `@loop-safety` rule requires approval for destructive ops. Hooks and Auto-review provide additional gates. If blocked, escalate — do not bypass.
+</FaqItem>
+
+<FaqItem question="How do I keep secrets out of loop logs?">
+Use `.cursorignore` for `.env` and secret paths. Never commit real credentials. Loop metric JSON should not contain API keys or customer data.
+</FaqItem>
+
+<FaqItem question="Should loop rules be alwaysApply?">
+Usually no. Workshop rules use `alwaysApply: false` and are referenced with `@loop-discipline` in loop threads. Keep always-apply rules lean to preserve token budget.
+</FaqItem>
+
+</FaqSection>
+
+<FaqSection eyebrow="Troubleshooting" title="When loops fail" id="troubleshooting">
+
+<FaqItem question="The agent stops at green but tests still fail when I run them?" defaultOpen>
+The agent may have misread output or fixed a symptom. You are the final regression gate — run the full suite yourself. Improve regression gates in the task spec and ensure `@loop-discipline` requires full verifier scope.
+</FaqItem>
+
+<FaqItem question="The loop hit max iterations without green?">
+Check `common_fails` for the task. Often the verifier encodes a race or concurrent case the agent patches around. Review blocked summary; consider rung 1 with human approval per iteration, or improve verifier with `/verifier-crafting`.
+</FaqItem>
+
+<FaqItem question="Prompt-only arm looks faster — are loops a waste?">
+Sometimes yes for trivial tasks. Loops win on pass rate and human interventions when a real verifier exists. Report token and wall-clock cost honestly. The framework teaches when to escalate, not to replace all prompting.
+</FaqItem>
+
+<FaqItem question="cursor-agent -p hangs in scripts?">
+Known issue in early 2026 headless mode. Wrap calls in `timeout` and verify flags against current CLI docs. V0 workshops use IDE Agent mode instead.
+</FaqItem>
+
+<FaqItem question="How do I port Loop Engineering to my own repo?">
+Copy the three rules and adapt verifier paths. Author task YAML with seeded state and verifiers from your test suite. Start at rung 2 with one maintenance bug that already has a red test.
+</FaqItem>
+
+</FaqSection>
+
+## Next Steps
+
+Return to [Introduction](/) or review [First Loop Lab](./hands-on-labs/first-loop-lab).

@@ -1,0 +1,144 @@
+---
+title: Rules & Skills for Loops
+description: Encode loop discipline in rules; package procedures in skills — rules guide, skills do
+hide_title: true
+presentation_layout: true
+---
+
+<SectionBanner
+  eyebrow="Rules & Skills"
+  title="Encode Loop Discipline"
+  subtitle="Rules guide, skills do, commands trigger — don't leave the loop to chance"
+  variant="image"
+  agendaItems={[
+    { label: 'Author loop rules (.mdc)' },
+    { label: 'Package loop skills (SKILL.md)' },
+  ]}
+/>
+
+Context pressure erodes verbal instructions. Rules and skills make act→verify→correct→repeat portable across threads, facilitators, and repos.
+
+## Why this matters
+
+FR-6 requires loop discipline portable with minimal edits. Without committed rules, each facilitator improvises prompts and cohorts get incomparable results. Skills package multi-step procedures (run comparison, craft verifier) that should not bloat always-apply token budget.
+
+## What you'll learn
+
+- You can distinguish when to use a rule vs a skill vs a command for loop work
+- You can deploy the three workshop loop rules from `.cursor/rules/`
+- You can invoke `/loop-engineering`, `/verifier-crafting`, `/run-comparison`
+- You can keep always-apply rules lean while encoding non-negotiable discipline
+
+## How it works
+
+| Mechanism | Loop role | Activation |
+|-----------|-----------|------------|
+| **Rules** | Passive discipline — verify after every edit, termination, safety | `@loop-discipline` or globs / always-apply |
+| **Skills** | On-demand procedures — run a loop, craft verifier, A/B/C comparison | `/loop-engineering` or agent auto-load |
+| **Commands** | Manual facilitator shortcuts | `/demo-reset` (if defined) |
+
+Workshop ships:
+
+- `loop-discipline.mdc` — act→verify→correct→repeat
+- `loop-termination.mdc` — green, blocked, budget
+- `loop-safety.mdc` — destructive command gates, secret hygiene
+
+Skills:
+
+- `loop-engineering` — execute a full loop on a task spec
+- `verifier-crafting` — design pass/fail verifiers
+- `run-comparison` — A/B/C measurement procedure
+
+Rule of thumb: **if you've corrected the agent three times on the same thing, make it a rule. If it's a multi-step procedure invoked occasionally, make it a skill.**
+
+## When to use this
+
+| Need | Rule | Skill | Command |
+|------|------|-------|---------|
+| Always verify after edits | ✓ `loop-discipline` | | |
+| One-off comparison demo | | ✓ `run-comparison` | |
+| New task authoring | | ✓ `verifier-crafting` | |
+| Quick "run the loop" | Reference in prompt | ✓ `loop-engineering` | |
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Copy .cursor/',
+      body: 'From workshop `loops/` repo into atlas-oms (or merge with existing team rules).',
+    },
+    {
+      title: 'Read each rule',
+      body: 'Open the three `.mdc` files. Note activation: `alwaysApply: false` — reference with @.',
+    },
+    {
+      title: 'Test skill invoke',
+      body: 'Agent mode: `/loop-engineering` — confirm procedure loads.',
+    },
+    {
+      title: 'Thread template',
+      body: 'Start loops with: `@loop-discipline @loop-termination` + task spec + `/loop-engineering`.',
+    },
+    {
+      title: 'Token audit',
+      body: 'Check always-apply rules count — keep under team budget; loop rules are on-demand.',
+    },
+  ]}
+/>
+
+## Example
+
+<ComparePrompts
+  title="Loop thread framing"
+  bad={{
+    label: 'Verbal only',
+    prompt: 'Fix the test. Keep trying until it works.',
+  }}
+  good={{
+    label: 'Rules + skill',
+    prompt: `@loop-discipline @loop-termination @loop-safety
+
+/loop-engineering
+
+Task: oms-status-race-001
+Verifier: pytest tests/order/test_status_transition.py
+Budget: 8 iterations`,
+  }}
+/>
+
+## Common mistakes
+
+### 50-line always-apply rule
+**Symptom:** Every chat pays token tax; team disables rules.  
+**Fix:** Short pointed rules; move procedures to skills.
+
+### Skills as rules
+**Symptom:** Comparison procedure loads every thread.  
+**Fix:** `run-comparison` is a skill — facilitator invokes on demand.
+
+### Rules never referenced
+**Symptom:** `alwaysApply: false` and never `@` mentioned — agent ignores discipline.  
+**Fix:** Facilitator template always includes `@loop-discipline` in loop threads.
+
+:::tip Official Docs
+[Rules](https://cursor.com/docs/context/rules) · [Agent Skills](https://cursor.com/docs/context/skills)
+:::
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="rs-overview"
+  items={[
+    {id: 'distinction', label: 'I can explain rules vs skills vs commands'},
+    {id: 'deployed', label: 'Workshop rules and skills copied to lab repo'},
+    {id: 'invoke', label: 'I successfully invoked /loop-engineering'},
+  ]}
+/>
+
+<PageProgress courseId="loop-engineering" />
+
+## Next Steps
+
+Continue to [Creating Loop Rules →](./creating-loop-rules)

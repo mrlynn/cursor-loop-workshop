@@ -1,0 +1,17 @@
+{
+  "name": "cursor-docs-screenshots",
+  "private": true,
+  "type": "module",
+  "description": "Semi-automated Cursor IDE screenshot capture for Docusaurus workshop docs",
+  "scripts": {
+    "capture": "node lib/run-scenes.mjs",
+    "capture:cdp": "node capture-cdp.mjs",
+    "capture:all": "node lib/run-scenes.mjs --all"
+  },
+  "dependencies": {
+    "yaml": "^2.8.0"
+  },
+  "optionalDependencies": {
+    "playwright": "^1.49.0"
+  }
+}

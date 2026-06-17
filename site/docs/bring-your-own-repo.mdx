@@ -1,0 +1,144 @@
+---
+title: Bring Your Own Repo
+description: Apply Loop Engineering to your codebase — scaffold tasks, install harness or plugin, run loops
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="BYO" subtitle="Your repo, your failing test, your verifier — no atlas-oms required" />
+
+Advanced users adopt Loop Engineering when it works on **Monday's bug**, not a workshop lab. This page is the BYO playbook.
+
+## The bar
+
+One command that returns pass/fail on real pain. No command → use `/loop-verify` or `/verifier-crafting` first.
+
+## Two ways to get the harness
+
+| Method | Best for |
+|--------|----------|
+| **Plugin** | Teams, global install, no file copy |
+| **copy-harness.sh** | Single repo, commit `.cursor/` to Git |
+
+### Plugin install
+
+```bash
+make build-plugin
+make install-plugin    # symlink to ~/.cursor/plugins/local/
+```
+
+Restart Cursor → **Settings → Plugins** → enable **Loop Engineering**.
+
+### Copy into repo
+
+```bash
+./scripts/copy-harness.sh /path/to/your/repo
+```
+
+## Scaffold your first BYO task
+
+```bash
+./scripts/scaffold-byo-task.sh
+# or
+make scaffold
+```
+
+Produces `tasks/<your-id>.yaml` from `tasks/_template.yaml`.
+
+<PromptBlock
+  title="Non-interactive example"
+  prompt={`./scripts/scaffold-byo-task.sh \\
+  --id refund-rounding-001 \\
+  --verifier "pytest tests/billing/test_refund.py -x" \\
+  --rung 2 \\
+  --area billing`}
+/>
+
+## Run the loop
+
+```bash
+make prompt-copy TASK=refund-rounding-001
+# or: ./scripts/task-prompt.sh <id> --copy
+```
+
+In Agent mode on **your repo**:
+
+```text
+/byo-loop-task
+@loop-discipline @loop-termination @loop-safety
+```
+
+Paste the generated prompt or use `/loop-engineering` with your task spec.
+
+## BYO task patterns in the corpus
+
+| Task ID | Rung | Pattern |
+|---------|------|---------|
+| `lint-gate-stale-import-001` | 2 | `ruff check` on a package |
+| `type-narrowing-handler-001` | 1 | Single-file `mypy` (supervised) |
+| `comparison-prompt-baseline-001` | 0 | Arm A for `/loop-compare` |
+
+Swap paths for your tree — these are **patterns**, not atlas-oms requirements.
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Find red verifier',
+      body: 'Run a test, lint, or typecheck that fails on the pain you care about.',
+    },
+    {
+      title: 'Install harness',
+      body: 'Plugin (`make install-plugin`) or `copy-harness.sh` into your repo.',
+    },
+    {
+      title: 'Scaffold YAML',
+      body: '`make scaffold` — document seeded_state, common_fails, regression gates.',
+    },
+    {
+      title: 'Baseline iteration 0',
+      body: 'Run verifier before Agent touches code. Save failure output.',
+    },
+    {
+      title: 'Loop to green',
+      body: '/loop-engineering with budget. You review at green (rung 2).',
+    },
+    {
+      title: 'Log evidence',
+      body: '`make loop TASK=your-id ITERS=4` — optional FR-4 JSON for comparison.',
+    },
+  ]}
+/>
+
+## Common mistakes
+
+### Verifier passes on broken code
+**Fix:** You are not testing the pain. Redesign with `/verifier-crafting`.
+
+### `# noqa` / `type: ignore` green
+**Fix:** Add regression tests; tighten `common_fails` in task YAML.
+
+### Looping in workshop repo
+**Fix:** Open **your** repo as workspace; workshop repo is curriculum + harness source only.
+
+## Checklist
+
+<InteractiveChecklist
+  courseId="loop-engineering"
+  checklistId="byo-checklist"
+  items={[
+    {id: 'verifier-red', label: 'Verifier fails on seeded state before loop'},
+    {id: 'harness', label: 'Plugin enabled or copy-harness.sh run'},
+    {id: 'yaml', label: 'tasks/<id>.yaml scaffolded'},
+    {id: 'green', label: 'Loop closed to green with regression gates'},
+  ]}
+/>
+
+:::tip Repo guide
+Full text: `BYO.md` at workshop repo root.
+:::
+
+## Next Steps
+
+- [Quick Reference →](../quick-reference) · [First Loop Lab →](../hands-on-labs/first-loop-lab) · `plugin/README.md` in your clone

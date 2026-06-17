@@ -1,0 +1,132 @@
+---
+title: Prompt vs Loop Demo
+description: Facilitate or pair-run the A/B comparison on oms-status-race-001
+hide_title: true
+presentation_layout: true
+---
+
+<ChapterHeader eyebrow="Hands-on Labs" subtitle="Feel the cognitive load difference — then log it" />
+
+Capstone demonstration: same task, arm A then arm B, metrics on screen.
+
+## Why this matters
+
+This is the user story that sells Loop Engineering to skeptics. The learner must *feel* being the feedback loop in arm A before arm B hands it to the verifier.
+
+## What you'll learn
+
+- You can facilitate arm A without verifier leakage
+- You can reset seed between arms fairly
+- You can present side-by-side JSON in under 5 minutes
+- You can lead discussion on "which of your tasks has a verifier?"
+
+## How it works
+
+Use `/run-comparison` skill procedure. This lab compresses it into a paired exercise:
+
+- **Participant A:** runs prompt-only path, counts interventions
+- **Participant B:** runs agent loop, counts iterations
+- **Pair:** compare logs; facilitator shows cohort aggregate if available
+
+## Step-by-step
+
+<StepCards
+  steps={[
+    {
+      title: 'Pair up',
+      body: 'One facilitator per ~8 pairs for reset help.',
+    },
+    {
+      title: 'Arm A (5 min setup + run)',
+      body: 'Chat only. No test in prompt. Human runs verifier when "done."',
+    },
+    {
+      title: 'Hard reset',
+      body: 'Both partners verify same commit hash.',
+    },
+    {
+      title: 'Arm B (15 min)',
+      body: 'Agent + rules + skill. Project terminal optional.',
+    },
+    {
+      title: 'Log swap',
+      body: 'Exchange JSON files; note interventions vs iterations.',
+    },
+    {
+      title: 'Group debrief (10 min)',
+      body: 'Two volunteers share; facilitator shows honest cost slide.',
+    },
+  ]}
+/>
+
+## Example
+
+<ComparePrompts
+  title="Arm A vs Arm B prompts"
+  bad={{
+    label: 'Arm A — prompt only',
+    prompt: 'Fix the order status race so concurrent updates stay consistent.',
+  }}
+  good={{
+    label: 'Arm B — full loop',
+    prompt: `@loop-discipline @loop-termination
+/loop-engineering
+Task: oms-status-race-001
+Verifier: pytest tests/order/test_status_transition.py -x`,
+  }}
+/>
+
+Discussion questions:
+
+```text
+1. How many times did a human run the verifier in arm A?
+2. Did arm B cost more wall-clock? More tokens?
+3. Name one task on your current sprint that has a machine-checkable done.
+4. What verifier would you attach?
+```
+
+## Common mistakes
+
+### Skipping reset
+**Fix:** `git checkout . && git clean -fd` at seed commit.
+
+### Arm A with Agent mode
+**Fix:** Arm A uses Chat/Inline — not Agent.
+
+### Declaring victory without cost
+**Fix:** Show token/wall-clock even if unfavorable.
+
+:::tip Official Docs
+[Chat vs Agent](https://cursor.com/docs/agent)
+:::
+
+## Checklist
+
+- [ ] Arm A and B logs complete
+- [ ] Same seed commit for both
+- [ ] Debrief discussion completed
+- [ ] Optional: submit rung post-survey
+
+<StatementBlock background="bg_9">
+  You ran the loop and measured it. Take the framework to your repo: copy rules, craft one verifier, run one loop.
+</StatementBlock>
+
+<ModuleRecap
+  courseId="loop-engineering"
+  module="Hands-on Labs"
+  title="Workshop complete"
+  objectives={[
+    'Loop = prompt + verifier; four surfaces: task, verifier, rules, termination',
+    'Autonomy ladder rungs 0–3 with portable .cursor/ rules and skills',
+    'Harness: Agent + CLI + Hooks; measurement with honest A/B/C metrics',
+    'Closed one atlas-oms loop to green and logged evidence',
+  ]}
+  nextModule={{
+    title: 'FAQ',
+    href: '/faq',
+  }}
+/>
+
+## Next Steps
+
+Continue to [FAQ →](../faq)
