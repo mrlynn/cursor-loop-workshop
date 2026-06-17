@@ -75,7 +75,7 @@ make site
 # http://localhost:3000/cursor-loop-workshop/ — start at /quick-reference
 ```
 
-**Hosted:** [mrlynn.github.io/cursor-loop-workshop](https://mrlynn.github.io/cursor-loop-workshop/) (GitHub Pages — enable **Settings → Pages → GitHub Actions** on first deploy)
+**Hosted:** [mrlynn.github.io/cursor-loop-workshop](https://mrlynn.github.io/cursor-loop-workshop/)
 
 ## Task corpus
 
