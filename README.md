@@ -2,12 +2,21 @@
 
 Cursor workshop for teaching **Loop Engineering** — moving developers from prompt mode to agentic loops with machine-checkable verifiers. Based on [PRD.md](./PRD.md).
 
-**Workshop repo** = curriculum + harness + task corpus. **Lab repo** (`atlas-oms`) = optional seeded codebase for facilitated labs.
+**Repository:** [github.com/mrlynn/cursor-loop-workshop](https://github.com/mrlynn/cursor-loop-workshop)
+
+```bash
+git clone https://github.com/mrlynn/cursor-loop-workshop.git
+cd cursor-loop-workshop
+make install-plugin   # optional: global harness via plugin
+make site             # curriculum at http://localhost:3000
+```
+
+**Workshop repo** = curriculum + harness + task corpus. **Lab repo** (`atlas-oms`) = optional seeded codebase for facilitated labs — BYO works without it ([BYO.md](./BYO.md)).
 
 ## Repository layout
 
 ```
-loop-engineering/
+cursor-loop-workshop/
 ├── PRD.md
 ├── AGENTS.md              # Agent briefing — open this repo in Cursor
 ├── ADVANCED.md            # 15-minute skip path
@@ -56,14 +65,17 @@ Full guide: [BYO.md](./BYO.md) · Site: `/bring-your-own-repo`
 ```bash
 make setup WORKSHOP=~/code/loop-workshop
 make harness LAB=~/code/loop-workshop/atlas-oms
+# workshop clone lands in ~/code/loop-workshop/cursor-loop-workshop/
 ```
 
 ## Workshop site
 
 ```bash
 make site
-# http://localhost:3000 — start at /quick-reference
+# http://localhost:3000/cursor-loop-workshop/ — start at /quick-reference
 ```
+
+**Hosted:** [mrlynn.github.io/cursor-loop-workshop](https://mrlynn.github.io/cursor-loop-workshop/) (GitHub Pages — enable **Settings → Pages → GitHub Actions** on first deploy)
 
 ## Task corpus
 

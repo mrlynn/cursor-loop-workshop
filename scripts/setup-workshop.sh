@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
-# Clone loop-engineering workshop + atlas-oms lab repo side by side.
+# Clone cursor-loop-workshop + atlas-oms lab repo side by side.
 # Usage: ./scripts/setup-workshop.sh [target-directory]
 set -euo pipefail
 
 TARGET_DIR="${1:-$HOME/code/loop-workshop}"
-WORKSHOP_REPO="${WORKSHOP_REPO:-}" # set when published; empty = use parent of this script
+WORKSHOP_REPO="${WORKSHOP_REPO:-https://github.com/mrlynn/cursor-loop-workshop.git}"
+WORKSHOP_DIR="${WORKSHOP_DIR:-cursor-loop-workshop}"
 LAB_REPO="${ATLAS_OMS_REPO:-https://github.com/cursor-education/atlas-oms.git}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -15,18 +16,20 @@ cd "$TARGET_DIR"
 
 echo "==> Target directory: $TARGET_DIR"
 
-# Workshop repo — copy from local checkout if WORKSHOP_REPO unset
-if [[ -d loop-engineering ]]; then
-  echo "==> loop-engineering/ already exists — skipping"
+# Workshop repo — copy local checkout when running from this repo; else clone
+if [[ -d "$WORKSHOP_DIR" ]]; then
+  echo "==> $WORKSHOP_DIR/ already exists — skipping"
+elif [[ -d loop-engineering ]]; then
+  echo "==> loop-engineering/ exists (legacy name) — skipping"
+  WORKSHOP_DIR=loop-engineering
+elif [[ "${USE_LOCAL_COPY:-}" == "1" ]] \
+     || git -C "$WORKSHOP_ROOT" remote get-url origin 2>/dev/null | grep -q 'cursor-loop-workshop'; then
+  echo "==> Copying workshop from local checkout: $WORKSHOP_ROOT"
+  cp -R "$WORKSHOP_ROOT" "$WORKSHOP_DIR"
+  rm -rf "$WORKSHOP_DIR/site/node_modules" "$WORKSHOP_DIR/site/build" "$WORKSHOP_DIR/site/.docusaurus" 2>/dev/null || true
 else
-  if [[ -n "$WORKSHOP_REPO" ]]; then
-    echo "==> Cloning workshop from $WORKSHOP_REPO"
-    git clone "$WORKSHOP_REPO" loop-engineering
-  else
-    echo "==> Copying workshop from local tree: $WORKSHOP_ROOT"
-    cp -R "$WORKSHOP_ROOT" loop-engineering
-    rm -rf loop-engineering/site/node_modules loop-engineering/site/build loop-engineering/site/.docusaurus 2>/dev/null || true
-  fi
+  echo "==> Cloning workshop from $WORKSHOP_REPO"
+  git clone "$WORKSHOP_REPO" "$WORKSHOP_DIR"
 fi
 
 # Lab substrate (separate repo per PRD §6.1)
@@ -38,16 +41,17 @@ else
   if git clone "$LAB_REPO" atlas-oms 2>/dev/null; then
     :
   else
-    echo "WARN: Could not clone atlas-oms. Ask your facilitator for the lab repo URL."
-    echo "      Create an empty atlas-oms/ directory and clone manually before the lab."
+    echo "WARN: Could not clone atlas-oms. Use BYO.md or bring-your-own-repo — no lab required."
+    echo "      Create an empty atlas-oms/ directory and clone manually if you need facilitated labs."
     mkdir -p atlas-oms
   fi
 fi
 
 echo ""
 echo "==> Next steps"
-echo "  1. cd loop-engineering/site && npm install && npm run start"
-echo "  2. Copy harness:  ./loop-engineering/scripts/copy-harness.sh ../atlas-oms"
-echo "  3. Checkout lab task branch (facilitator provides), e.g.:"
+echo "  1. cd $WORKSHOP_DIR/site && npm install && npm run start"
+echo "  2. Copy harness:  ./$WORKSHOP_DIR/scripts/copy-harness.sh ../atlas-oms"
+echo "     Or BYO:         make -C $WORKSHOP_DIR install-plugin  →  /byo-loop-task in your repo"
+echo "  3. Facilitated lab only — checkout task branch, e.g.:"
 echo "       cd atlas-oms && git checkout workshop/oms-status-race-001"
-echo "  4. Open atlas-oms in Cursor and confirm verifier is RED before the lab."
+echo "  4. Open atlas-oms (or your repo) in Cursor; confirm verifier is RED before the lab."

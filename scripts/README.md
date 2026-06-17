@@ -17,8 +17,11 @@ chmod +x scripts/*.sh
 
 # Learner machine (or local dev)
 ./scripts/setup-workshop.sh ~/code/loop-workshop
+# → ~/code/loop-workshop/cursor-loop-workshop/ (cloned from GitHub)
 ./scripts/copy-harness.sh ~/code/loop-workshop/atlas-oms
 ```
+
+Published workshop: `https://github.com/mrlynn/cursor-loop-workshop`
 
 ## Log a manual B-arm run (V0)
 

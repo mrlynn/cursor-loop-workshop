@@ -24,11 +24,11 @@ presentation_layout: true
 <FaqSection eyebrow="Setup" title="Install and environment" id="setup">
 
 <FaqItem question="What do I need before the workshop?" defaultOpen>
-Two repositories: this **loop-engineering** workshop repo (curriculum + harness) and **atlas-oms** (lab codebase). Run `./scripts/setup-workshop.sh` then `./scripts/copy-harness.sh` from the workshop root. Open **atlas-oms** in Cursor for labs; run `site/npm start` separately for the curriculum. Confirm indexing and a red verifier on the task branch before session start.
+Two repositories for **facilitated labs**: [cursor-loop-workshop](https://github.com/mrlynn/cursor-loop-workshop) (curriculum + harness) and **atlas-oms** (optional lab). Run `./scripts/setup-workshop.sh` then `./scripts/copy-harness.sh`, or BYO with `make install-plugin` and `/byo-loop-task`. Open **atlas-oms** or your repo in Cursor for labs; run `site/npm start` separately for the curriculum.
 </FaqItem>
 
 <FaqItem question="Where are the loop rules and skills?">
-In the workshop `loops` repo under `.cursor/rules/` (three `.mdc` files) and `.cursor/skills/` (`loop-engineering`, `verifier-crafting`, `run-comparison`). Commit them to your team repo for cohort consistency.
+In [cursor-loop-workshop](https://github.com/mrlynn/cursor-loop-workshop) under `.cursor/rules/` (three `.mdc` files) and `.cursor/skills/` (`loop-engineering`, `verifier-crafting`, `run-comparison`, `byo-loop-task`). Copy into your repo, or `make install-plugin` for the bundled plugin.
 </FaqItem>
 
 <FaqItem question="What is atlas-oms?">

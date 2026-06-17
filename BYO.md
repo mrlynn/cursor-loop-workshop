@@ -30,7 +30,7 @@ If it does not fail on the broken state, you do not have a loop yet — you have
 **Interactive:**
 
 ```bash
-cd /path/to/loop-engineering-workshop
+cd /path/to/cursor-loop-workshop
 ./scripts/scaffold-byo-task.sh
 ```
 

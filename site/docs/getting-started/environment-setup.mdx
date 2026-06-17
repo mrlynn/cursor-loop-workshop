@@ -20,15 +20,15 @@ Loop runs must be reproducible across a cohort. Same rules, same skills, same ta
 - You can run the atlas-oms verifier locally and see a red baseline
 - You can configure `.cursorignore` for secret hygiene
 
-The workshop uses **two repositories**. This repo (`loop-engineering`) holds the curriculum site, harness, and task specs. The **atlas-oms** lab repo holds the seeded codebase where verifiers run.
+The workshop uses **two repositories** (facilitated labs) or **BYO** (your repo only). This repo ([cursor-loop-workshop](https://github.com/mrlynn/cursor-loop-workshop)) holds the curriculum site, harness, and task specs. **atlas-oms** is an optional lab repo for seeded hands-on tasks.
 
 ## How it works
 
 **This repo (workshop):**
 
 ```
-loop-engineering/
-├── .cursor/          # harness — copy into atlas-oms, do not run labs here
+cursor-loop-workshop/
+├── .cursor/          # harness — copy into lab or install via plugin
 ├── tasks/            # versioned task YAML
 ├── scripts/          # setup-workshop.sh, copy-harness.sh, loop-harness.sh
 └── site/             # Docusaurus workshop (npm start)
@@ -52,11 +52,12 @@ From the workshop repo root:
 
 ```bash
 chmod +x scripts/*.sh
+git clone https://github.com/mrlynn/cursor-loop-workshop.git ~/code/cursor-loop-workshop   # or use setup script
 ./scripts/setup-workshop.sh ~/code/loop-workshop
 ./scripts/copy-harness.sh ~/code/loop-workshop/atlas-oms
 ```
 
-Then open `~/code/loop-workshop/atlas-oms` in Cursor — not the workshop repo root.
+Then open `~/code/loop-workshop/atlas-oms` in Cursor — not the workshop repo root. **BYO path:** skip atlas-oms; use [Bring your own repo →](../bring-your-own-repo) and `make install-plugin`.
 
 ## When to use this
 
@@ -97,7 +98,7 @@ Then open `~/code/loop-workshop/atlas-oms` in Cursor — not the workshop repo r
     },
     {
       title: 'Start workshop site',
-      body: 'Separate terminal: `cd loop-engineering/site && npm install && npm run start` for curriculum.',
+      body: 'Separate terminal: `cd cursor-loop-workshop/site && npm install && npm run start` for curriculum.',
     },
     {
       title: 'Smoke-test harness',

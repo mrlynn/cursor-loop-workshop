@@ -6,8 +6,8 @@ const config: Config = {
   title: 'Loop Engineering × Cursor',
   tagline: 'Move from prompt mode to agentic loops with verifiable feedback',
   favicon: 'img/cursor-favicon.ico',
-  url: 'https://docs.example.com',
-  baseUrl: '/',
+  url: 'https://mrlynn.github.io',
+  baseUrl: '/cursor-loop-workshop/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
@@ -55,7 +55,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           routeBasePath: '/',
-          editUrl: undefined,
+          editUrl: 'https://github.com/mrlynn/cursor-loop-workshop/tree/main/site/',
         },
         blog: false,
         theme: {
@@ -87,6 +87,12 @@ const config: Config = {
           label: 'Workshop',
         },
         {
+          href: 'https://github.com/mrlynn/cursor-loop-workshop',
+          label: 'GitHub',
+          position: 'right',
+          className: 'navbar__link--external',
+        },
+        {
           href: 'https://cursor.com/docs',
           label: 'cursor.com/docs',
           position: 'right',
@@ -101,6 +107,7 @@ const config: Config = {
         {
           title: 'Resources',
           items: [
+            {label: 'Workshop repo', href: 'https://github.com/mrlynn/cursor-loop-workshop'},
             {label: 'Cursor Docs', href: 'https://cursor.com/docs'},
             {label: 'Agent Skills', href: 'https://cursor.com/docs/context/skills'},
             {label: 'Rules', href: 'https://cursor.com/docs/context/rules'},

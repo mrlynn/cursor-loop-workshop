@@ -1,6 +1,6 @@
 # Loop Engineering — agent briefing
 
-You are in the **loop-engineering** workshop repo. This file gives you enough context to run loops without reading the full curriculum.
+You are in the **cursor-loop-workshop** repo ([GitHub](https://github.com/mrlynn/cursor-loop-workshop)). This file gives you enough context to run loops without reading the full curriculum.
 
 ## Thesis
 

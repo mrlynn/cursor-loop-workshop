@@ -9,4 +9,4 @@ Scaffold and run a loop task in the user's own repo (BYO).
 
 If no failing command exists, use `/loop-verify` or `/verifier-crafting` first — do not loop without a signal.
 
-Guide: `BYO.md` in loop-engineering workshop repo.
+Guide: `BYO.md` in [cursor-loop-workshop](https://github.com/mrlynn/cursor-loop-workshop).
